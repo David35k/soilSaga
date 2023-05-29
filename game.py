@@ -58,20 +58,25 @@ class Tiles:
                 ],
             )
 
+tiles = Tiles(100, 100, 5, 10)
+tiles.createTiles()
+
 
 class Plant:
     def __init__(self):
         pass
 
-    def place(self):
-        print("hi")
+    def place(self, tile):
+        pygame.draw.rect(screen, ORANGE, [tile[0] * 50 + 25, tile[1] * 50 + 25, 25, 25])
 
-    def draw(self):
+        tile[2] = False
+
+    def draw(self, x, y, width, height):
         pass
 
 
 class Card:
-    def __init__(self, order, cost, canPick, plant):
+    def __init__(self, order, cost, canPick, plant, plantName):
         self.width = 100
         self.height = 100
         self.order = order
@@ -81,6 +86,7 @@ class Card:
         self.posy = HEIGHT - self.height - 25
         self.picked = False
         self.plant = plant
+        self.plantName = plantName
 
     def pick(self):
         pass
@@ -110,13 +116,12 @@ class CardBar:
         )
 
 
-tiles = Tiles(100, 100, 5, 10)
-tiles.createTiles()
+
 
 cardBar = CardBar(WIDTH, 150)
 
 cornPlant = Plant()
-cornCard = Card(0, 100, True, cornPlant)
+cornCard = Card(0, 100, True, cornPlant, "corn")
 
 cards = [cornCard]
 
@@ -155,8 +160,7 @@ while carryOn:
                         and pygame.mouse.get_pos()[1] <= tiles.tileWidth * tile[0] + tiles.tileHeight
                         and tile[2]
                     ):
-                        currentCard.plant.place()
-                        tile[2] = False
+                        currentCard.plant.place(tile)
 
                 currentCard = 0
 
