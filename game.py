@@ -17,6 +17,7 @@ COLOR2 = (100, 100, 100)
 ORANGE = (255, 165, 0)
 ORANGE2 = (240, 165, 0)
 WHITE = (255, 255, 255)
+BLUE = (0, 0, 255)
 
 currentCard = 0
 
@@ -67,16 +68,16 @@ class Plant:
         pass
 
     def place(self, tile):
-        pygame.draw.rect(screen, ORANGE, [tile[0] * 50 + 25, tile[1] * 50 + 25, 25, 25])
+        
 
         tile[2] = False
 
     def draw(self, x, y, width, height):
-        pass
+        pygame.draw.rect(screen, ORANGE, [tile[0] * 50 + 25, tile[1] * 50 + 25, 25, 25])
 
 
 class Card:
-    def __init__(self, order, cost, canPick, plant, plantName):
+    def __init__(self, order, cost, canPick, plantName):
         self.width = 100
         self.height = 100
         self.order = order
@@ -85,11 +86,10 @@ class Card:
         self.posx = self.width * self.order + 10
         self.posy = HEIGHT - self.height - 25
         self.picked = False
-        self.plant = plant
         self.plantName = plantName
 
-    def pick(self):
-        pass
+    def place(self, tile):
+        print(self.plantName)
 
     def draw(self):
         color = ORANGE
@@ -100,7 +100,7 @@ class Card:
             and pygame.mouse.get_pos()[1] >= self.posy
             and pygame.mouse.get_pos()[1] <= self.posy + self.height
         ):
-            color = ORANGE2
+            color = BLUE
 
         pygame.draw.rect(screen, color, [self.posx, self.posy, self.width, self.height])
 
@@ -120,10 +120,10 @@ class CardBar:
 
 cardBar = CardBar(WIDTH, 150)
 
-cornPlant = Plant()
-cornCard = Card(0, 100, True, cornPlant, "corn")
+cornCard = Card(0, 100, True, "corn")
+susCard = Card(1.1, 200, True, "sus")
 
-cards = [cornCard]
+cards = [cornCard, susCard]
 
 while carryOn:
     # get check
@@ -160,7 +160,7 @@ while carryOn:
                         and pygame.mouse.get_pos()[1] <= tiles.tileWidth * tile[0] + tiles.tileHeight
                         and tile[2]
                     ):
-                        currentCard.plant.place(tile)
+                        currentCard.place(tile)
 
                 currentCard = 0
 
