@@ -65,16 +65,22 @@ tiles.createTiles()
 
 class Plant:
     def __init__(self):
-        pass
+        self.x = tile[1] * 100 + 25
+        self.y = tile[0] * 100 + 25
+        self.width = 50
+        self.height = 50
 
-    def place(self, tile):
+    def draw(self):
+        pygame.draw.rect(screen, ORANGE, [self.x, self.y, self.width, self.height])
+
+class CornPlant(Plant):
+    def __init__(self, damage, fireRate):
+        super().__init__()
+        self.damage = damage
+        self.fireRate = fireRate
         
-
-        tile[2] = False
-
-    def draw(self, x, y, width, height):
-        pygame.draw.rect(screen, ORANGE, [tile[0] * 50 + 25, tile[1] * 50 + 25, 25, 25])
-
+    def shoot(self):
+        pass
 
 class Card:
     def __init__(self, order, cost, canPick, plantName):
@@ -90,6 +96,9 @@ class Card:
 
     def place(self, tile):
         print(self.plantName)
+
+        if currentCard.plantName == "corn":
+            plants.append(CornPlant(50, 45))
 
     def draw(self):
         color = ORANGE
@@ -116,14 +125,13 @@ class CardBar:
         )
 
 
-
-
 cardBar = CardBar(WIDTH, 150)
 
 cornCard = Card(0, 100, True, "corn")
 susCard = Card(1.1, 200, True, "sus")
 
 cards = [cornCard, susCard]
+plants = []
 
 while carryOn:
     # get check
@@ -179,6 +187,9 @@ while carryOn:
 
     for card in cards:
         card.draw()
+
+    for plant in plants:
+        plant.draw()
 
     # update screen
     pygame.display.flip()
