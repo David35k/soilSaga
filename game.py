@@ -2,6 +2,7 @@ import pygame, random
 
 pygame.init()
 
+# setting up the display
 WIDTH, HEIGHT = 1000, 700
 size = (WIDTH, HEIGHT)
 screen = pygame.display.set_mode(size)
@@ -18,6 +19,7 @@ ORANGE = (255, 165, 0)
 ORANGE2 = (240, 165, 0)
 WHITE = (255, 255, 255)
 BLUE = (0, 0, 255)
+PURPLE = (255, 0, 255)
 
 currentCard = 0
 
@@ -59,8 +61,29 @@ class Tiles:
                 ],
             )
 
+
 tiles = Tiles(100, 100, 5, 10)
 tiles.createTiles()
+
+
+class Bullet:
+    def __init__(self, plant, speed, damage):
+        self.plant = plant
+        self.speed = speed
+        self.damage = damage
+        self.x = plant.x
+
+    def move(self):
+        # update position
+        self.x += self.speed
+
+        # if it goes off the screen delete it
+        if self.x >= WIDTH:
+            plant.bulletArr.remove(self)
+            del self
+
+    def draw(self):
+        pygame.draw.rect(screen, PURPLE, [self.x, plant.y, 25, 25])
 
 
 class Plant:
@@ -73,14 +96,27 @@ class Plant:
     def draw(self):
         pygame.draw.rect(screen, ORANGE, [self.x, self.y, self.width, self.height])
 
+
 class CornPlant(Plant):
-    def __init__(self, damage, fireRate):
+    def __init__(self):
         super().__init__()
-        self.damage = damage
-        self.fireRate = fireRate
-        
-    def shoot(self):
-        pass
+        self.damage = 50
+        self.fireRate = 60  # lower means faster shooting
+        self.shootTimer = 0
+        self.bulletArr = []
+
+    # TODO: make it so that it only attacks if there is an enemy in its lane
+    def attack(self):
+        # if the timer is less than what it should be dont fire, otherwise do
+        if self.shootTimer < self.fireRate:
+            pass
+        elif self.shootTimer >= self.fireRate:
+            # add a new bullet to the bullet array
+            self.bulletArr.append(Bullet(self, 5, self.damage))
+            self.shootTimer = 0
+
+        self.shootTimer += 1
+
 
 class Card:
     def __init__(self, order, cost, canPick, plantName):
@@ -94,11 +130,11 @@ class Card:
         self.picked = False
         self.plantName = plantName
 
-    def place(self, tile):
-        print(self.plantName)
+    def place(self):
+        print("planted: " + self.plantName)
 
         if currentCard.plantName == "corn":
-            plants.append(CornPlant(50, 45))
+            plants.append(CornPlant())
 
     def draw(self):
         color = ORANGE
@@ -114,6 +150,7 @@ class Card:
         pygame.draw.rect(screen, color, [self.posx, self.posy, self.width, self.height])
 
 
+# probably dont need this lawl
 class CardBar:
     def __init__(self, width, height):
         self.width = width
@@ -127,6 +164,8 @@ class CardBar:
 
 cardBar = CardBar(WIDTH, 150)
 
+
+# create all of the different types of cards
 cornCard = Card(0, 100, True, "corn")
 susCard = Card(1.1, 200, True, "sus")
 
@@ -163,20 +202,31 @@ while carryOn:
                 for tile in tiles.tileArr:
                     if (
                         pygame.mouse.get_pos()[0] >= tiles.tileWidth * tile[1]
-                        and pygame.mouse.get_pos()[0] <= tiles.tileWidth * tile[1] + tiles.tileWidth
+                        and pygame.mouse.get_pos()[0]
+                        <= tiles.tileWidth * tile[1] + tiles.tileWidth
                         and pygame.mouse.get_pos()[1] >= tiles.tileWidth * tile[0]
-                        and pygame.mouse.get_pos()[1] <= tiles.tileWidth * tile[0] + tiles.tileHeight
+                        and pygame.mouse.get_pos()[1]
+                        <= tiles.tileWidth * tile[0] + tiles.tileHeight
                         and tile[2]
                     ):
-                        currentCard.place(tile)
+                        currentCard.place()
+                        tile[2] = False  # cant plant there anymore
 
                 currentCard = 0
 
-    # update positions
+    # update positions of cards
     if currentCard:
         if currentCard.picked:
             currentCard.posx = pygame.mouse.get_pos()[0] - 0.5 * currentCard.width
             currentCard.posy = pygame.mouse.get_pos()[1] - 0.5 * currentCard.height
+
+    # plants attack
+    for plant in plants:
+        plant.attack()
+
+        if plant.bulletArr:
+            for bullet in plant.bulletArr:
+                bullet.move()
 
     # clear screen
     pygame.draw.rect(screen, (0, 0, 0), [0, 0, WIDTH, HEIGHT])
@@ -185,10 +235,16 @@ while carryOn:
     tiles.draw()
     cardBar.draw()
 
+    # draw the cards
     for card in cards:
         card.draw()
 
+    # draw the plants and their bullets (if they have any)
     for plant in plants:
+        if plant.bulletArr:
+            for bullet in plant.bulletArr:
+                bullet.draw()
+
         plant.draw()
 
     # update screen
