@@ -20,6 +20,7 @@ ORANGE2 = (240, 165, 0)
 WHITE = (255, 255, 255)
 BLUE = (0, 0, 255)
 PURPLE = (255, 0, 255)
+GREEN = (0, 255, 0)
 
 currentCard = 0
 
@@ -101,7 +102,7 @@ class CornPlant(Plant):
     def __init__(self):
         super().__init__()
         self.damage = 50
-        self.fireRate = 60  # lower means faster shooting
+        self.fireRate = 15  # lower means faster shooting
         self.shootTimer = 0
         self.bulletArr = []
 
@@ -160,6 +161,16 @@ class CardBar:
         pygame.draw.rect(
             screen, WHITE, [0, HEIGHT - self.height, self.width, self.height]
         )
+
+
+class Enemy:
+    def __init__(self, row):
+        self.row = row
+        self.x = WIDTH
+        self.y = self.row * 100 + 25
+    
+    def draw(self):
+        pygame.draw.rect(screen, GREEN, [self.x, self.y, 50, 50])
 
 
 cardBar = CardBar(WIDTH, 150)
