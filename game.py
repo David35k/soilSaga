@@ -88,11 +88,12 @@ class Bullet:
 
 
 class Plant:
-    def __init__(self):
+    def __init__(self, health):
         self.x = tile[1] * 100 + 25
         self.y = tile[0] * 100 + 25
         self.width = 50
         self.height = 50
+        self.health = health
 
     def draw(self):
         pygame.draw.rect(screen, ORANGE, [self.x, self.y, self.width, self.height])
@@ -100,9 +101,9 @@ class Plant:
 
 class CornPlant(Plant):
     def __init__(self):
-        super().__init__()
+        super().__init__(50)
         self.damage = 50
-        self.fireRate = 15  # lower means faster shooting
+        self.fireRate = 45  # lower means faster shooting
         self.shootTimer = 0
         self.bulletArr = []
 
@@ -151,29 +152,26 @@ class Card:
         pygame.draw.rect(screen, color, [self.posx, self.posy, self.width, self.height])
 
 
-# probably dont need this lawl
-class CardBar:
-    def __init__(self, width, height):
-        self.width = width
-        self.height = height
-
-    def draw(self):
-        pygame.draw.rect(
-            screen, WHITE, [0, HEIGHT - self.height, self.width, self.height]
-        )
-
-
 class Enemy:
-    def __init__(self, row):
+    def __init__(self, row, speed, damage):
         self.row = row
         self.x = WIDTH
         self.y = self.row * 100 + 25
-    
+        self.speed = speed
+        self.damage = damage
+
+    def move(self):
+        self.x -= self.speed
+
     def draw(self):
         pygame.draw.rect(screen, GREEN, [self.x, self.y, 50, 50])
 
 
-cardBar = CardBar(WIDTH, 150)
+class ZombieBasic(Enemy):
+    def __init__(self):
+        super().__init__(3, 1, 20)
+
+    
 
 
 # create all of the different types of cards
@@ -182,6 +180,8 @@ susCard = Card(1.1, 200, True, "sus")
 
 cards = [cornCard, susCard]
 plants = []
+
+bruh = ZombieBasic()
 
 while carryOn:
     # get check
@@ -239,12 +239,17 @@ while carryOn:
             for bullet in plant.bulletArr:
                 bullet.move()
 
+    # enemies move
+    bruh.move()
+
     # clear screen
     pygame.draw.rect(screen, (0, 0, 0), [0, 0, WIDTH, HEIGHT])
 
-    # draw stuff
+    # draw tiles
+    
     tiles.draw()
-    cardBar.draw()
+    bruh.draw()
+    pygame.draw.rect(screen, WHITE, [0, HEIGHT - 150, WIDTH, 150])
 
     # draw the cards
     for card in cards:
