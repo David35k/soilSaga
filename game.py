@@ -82,9 +82,15 @@ class Bullet:
         if self.x >= WIDTH:
             plant.bulletArr.remove(self)
             del self
+        else:
+            # if collides with enemy deal damage
+            if self.x >= bruh.x:
+                bruh.health -= self.damage
+                plant.bulletArr.remove(self)
+                del self
 
     def draw(self):
-        pygame.draw.rect(screen, PURPLE, [self.x, plant.y, 25, 25])
+        pygame.draw.rect(screen, PURPLE, [self.x, plant.y + 12.5, 25, 25])
 
 
 class Plant:
@@ -102,8 +108,8 @@ class Plant:
 class CornPlant(Plant):
     def __init__(self):
         super().__init__(50)
-        self.damage = 50
-        self.fireRate = 45  # lower means faster shooting
+        self.damage = 10
+        self.fireRate = 60  # lower means faster shooting
         self.shootTimer = 0
         self.bulletArr = []
 
@@ -153,15 +159,22 @@ class Card:
 
 
 class Enemy:
-    def __init__(self, row, speed, damage):
+    def __init__(self, row, speed, damage, health, dead):
         self.row = row
         self.x = WIDTH
         self.y = self.row * 100 + 25
         self.speed = speed
         self.damage = damage
+        self.health = health
+        self.dead = dead
 
     def move(self):
         self.x -= self.speed
+
+    def checkDeath(self):
+        print(self.health)
+        if self.health <= 0:
+            self.dead = True
 
     def draw(self):
         pygame.draw.rect(screen, GREEN, [self.x, self.y, 50, 50])
@@ -169,9 +182,7 @@ class Enemy:
 
 class ZombieBasic(Enemy):
     def __init__(self):
-        super().__init__(3, 1, 20)
-
-    
+        super().__init__(3, 1, 20, 50, False)
 
 
 # create all of the different types of cards
@@ -235,19 +246,26 @@ while carryOn:
     for plant in plants:
         plant.attack()
 
+        # bullet move
         if plant.bulletArr:
             for bullet in plant.bulletArr:
                 bullet.move()
 
-    # enemies move
-    bruh.move()
+
+    # check if enemy dead
+    bruh.checkDeath()
+    if bruh.dead:
+        del bruh
+    else:
+        # enemies move
+        bruh.move()
 
     # clear screen
     pygame.draw.rect(screen, (0, 0, 0), [0, 0, WIDTH, HEIGHT])
 
     # draw tiles
-    
-    tiles.draw()
+
+    # tiles.draw()
     bruh.draw()
     pygame.draw.rect(screen, WHITE, [0, HEIGHT - 150, WIDTH, 150])
 
