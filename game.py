@@ -73,6 +73,7 @@ class Bullet:
         self.speed = speed
         self.damage = damage
         self.x = plant.x
+        self.destroy = False
 
     def move(self):
         # update position
@@ -81,13 +82,13 @@ class Bullet:
         # if it goes off the screen delete it
         if self.x >= WIDTH:
             plant.bulletArr.remove(self)
-            del self
+            self.destroy = True
         else:
             # if collides with enemy deal damage
             if self.x >= bruh.x:
                 bruh.health -= self.damage
                 plant.bulletArr.remove(self)
-                del self
+                self.destroy = True
 
     def draw(self):
         pygame.draw.rect(screen, PURPLE, [self.x, plant.y + 12.5, 25, 25])
@@ -172,7 +173,6 @@ class Enemy:
         self.x -= self.speed
 
     def checkDeath(self):
-        print(self.health)
         if self.health <= 0:
             self.dead = True
 
@@ -181,8 +181,8 @@ class Enemy:
 
 
 class ZombieBasic(Enemy):
-    def __init__(self):
-        super().__init__(3, 1, 20, 50, False)
+    def __init__(self, row):
+        super().__init__(row, 1, 20, 50, False)
 
 
 # create all of the different types of cards
@@ -193,6 +193,11 @@ cards = [cornCard, susCard]
 plants = []
 
 bruh = ZombieBasic()
+
+enemyArr = []
+
+for i in range(5):
+    enemyArr.append(ZombieBasic(random.randint()))
 
 while carryOn:
     # get check
@@ -250,7 +255,8 @@ while carryOn:
         if plant.bulletArr:
             for bullet in plant.bulletArr:
                 bullet.move()
-
+                if bullet.destroy:
+                    del bullet
 
     # check if enemy dead
     bruh.checkDeath()
@@ -277,7 +283,8 @@ while carryOn:
     for plant in plants:
         if plant.bulletArr:
             for bullet in plant.bulletArr:
-                bullet.draw()
+                if not bullet.destroy:
+                    bullet.draw()
 
         plant.draw()
 
