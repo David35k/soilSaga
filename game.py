@@ -68,12 +68,13 @@ tiles.createTiles()
 
 
 class Bullet:
-    def __init__(self, plant, speed, damage):
+    def __init__(self, plant, speed, damage, row):
         self.plant = plant
         self.speed = speed
         self.damage = damage
         self.x = plant.x
         self.destroy = False
+        self.row = row
 
     def move(self):
         # update position
@@ -83,11 +84,11 @@ class Bullet:
         if self.x >= WIDTH:
             plant.bulletArr.remove(self)
             self.destroy = True
-        else:
-            # if collides with enemy deal damage
-            if self.x >= bruh.x:
-                bruh.health -= self.damage
-                plant.bulletArr.remove(self)
+        
+        # if collides with enemy deal damage
+        for enemy in enemyArr:
+            if self.x >= enemy.x and self.row == enemy.row:
+                enemy.health -= self.damage
                 self.destroy = True
 
     def draw(self):
@@ -121,7 +122,7 @@ class CornPlant(Plant):
             pass
         elif self.shootTimer >= self.fireRate:
             # add a new bullet to the bullet array
-            self.bulletArr.append(Bullet(self, 5, self.damage))
+            self.bulletArr.append(Bullet(self, 5, self.damage, (self.y - 25) / 100))
             self.shootTimer = 0
 
         self.shootTimer += 1
@@ -140,7 +141,7 @@ class Card:
         self.plantName = plantName
 
     def place(self):
-        print("planted: " + self.plantName)
+        print("planted: " + self.plantName + ", row: " + str(tile[0]) + ", column: " + str(tile[1]))
 
         if currentCard.plantName == "corn":
             plants.append(CornPlant())
@@ -192,12 +193,13 @@ susCard = Card(1.1, 200, True, "sus")
 cards = [cornCard, susCard]
 plants = []
 
-bruh = ZombieBasic()
+
+# bruh = ZombieBasic(6)
 
 enemyArr = []
 
-for i in range(5):
-    enemyArr.append(ZombieBasic(random.randint()))
+for i in range(1):
+    enemyArr.append(ZombieBasic(random.randint(0, 4)))
 
 while carryOn:
     # get check
@@ -255,24 +257,27 @@ while carryOn:
         if plant.bulletArr:
             for bullet in plant.bulletArr:
                 bullet.move()
-                if bullet.destroy:
+                if bullet.destroy and bullet in plant.bulletArr:
+                    plant.bulletArr.remove(bullet)
                     del bullet
 
     # check if enemy dead
-    bruh.checkDeath()
-    if bruh.dead:
-        del bruh
-    else:
-        # enemies move
-        bruh.move()
+    for enemy in enemyArr:
+        enemy.checkDeath()
+        if enemy.dead and enemy in enemyArr:
+            enemyArr.remove(enemy)
+            del enemy
+        else:
+            # enemies move
+            enemy.move()
 
     # clear screen
     pygame.draw.rect(screen, (0, 0, 0), [0, 0, WIDTH, HEIGHT])
 
     # draw tiles
-
     # tiles.draw()
-    bruh.draw()
+
+    # draw the card bar
     pygame.draw.rect(screen, WHITE, [0, HEIGHT - 150, WIDTH, 150])
 
     # draw the cards
@@ -287,6 +292,10 @@ while carryOn:
                     bullet.draw()
 
         plant.draw()
+
+    # draw the enemies
+    for enemy in enemyArr:
+        enemy.draw()
 
     # update screen
     pygame.display.flip()
