@@ -22,14 +22,6 @@ BLUE = (0, 0, 255)
 PURPLE = (255, 0, 255)
 GREEN = (0, 255, 0)
 
-currentCard = 0
-
-# MONEY!!!
-money = 1000
-
-# Fonts 
-moneyFont = pygame.font.SysFont(None, 50)
-
 
 class Tiles:
     def __init__(self, tileWidth, tileHeight, rows, columns):
@@ -93,7 +85,7 @@ class Bullet:
 
         # if collides with enemy deal damage
         for enemy in enemyArr:
-            if self.x >= enemy.x and self.row == enemy.row:
+            if self.x >= enemy.x and self.x <= enemy.x + 50 and self.row == enemy.row:
                 enemy.health -= self.damage
                 self.destroy = True
 
@@ -102,20 +94,38 @@ class Bullet:
 
 
 class Plant:
-    def __init__(self, health):
+    def __init__(self, health, type):
         self.x = tile[1] * 100 + 25
         self.y = tile[0] * 100 + 25
         self.width = 50
         self.height = 50
         self.health = health
+        self.type = type
 
     def draw(self):
         pygame.draw.rect(screen, ORANGE, [self.x, self.y, self.width, self.height])
 
 
+class MoneyTreePlant(Plant):
+    def __init__(self):
+        super().__init__(30, "passive")
+        self.rate = 500
+        self.timer = 0
+
+    def passive(self):
+        if self.timer < self.rate:
+            pass
+        elif self.timer >= self.rate:
+            global MONEY
+            MONEY = MONEY + 25
+            self.timer = 0
+
+        self.timer += 1
+
+
 class CornPlant(Plant):
     def __init__(self):
-        super().__init__(50)
+        super().__init__(50, "shoot")
         self.damage = 10
         self.fireRate = 60  # lower means faster shooting
         self.shootTimer = 0
@@ -156,7 +166,9 @@ class Card:
             + str(tile[1])
         )
 
-        if currentCard.plantName == "corn":
+        if currentCard.plantName == "moneyTree":
+            plants.append(MoneyTreePlant())
+        elif currentCard.plantName == "corn":
             plants.append(CornPlant())
 
     def draw(self):
@@ -216,11 +228,20 @@ class Wave:
                 enemy[1] -= 1
 
 
-# create all of the different types of cards
-cornCard = Card(0, 100, True, "corn")
-susCard = Card(1.1, 200, True, "sus")
+currentCard = 0
 
-cards = [cornCard, susCard]
+# MONEY!!!
+MONEY = 1000
+
+# Fonts
+moneyFont = pygame.font.SysFont(None, 50)
+
+# create all of the different types of cards
+moneyCard = Card(0, 50, True, "moneyTree")
+cornCard = Card(1.1, 100, True, "corn")
+
+
+cards = [moneyCard, cornCard]
 plants = []
 
 testWave = Wave([["zombieBasic", 120], ["zombieBasic", 500], ["zombieBasic", 300]], 600)
@@ -298,8 +319,10 @@ while carryOn:
                         and pygame.mouse.get_pos()[1]
                         <= tiles.tileWidth * tile[0] + tiles.tileHeight
                         and tile[2]
+                        and MONEY >= currentCard.cost
                     ):
                         currentCard.place()
+                        MONEY -= currentCard.cost
                         tile[2] = False  # cant plant there anymore
 
                 currentCard = 0
@@ -318,10 +341,13 @@ while carryOn:
 
     # plants attack
     for plant in plants:
-        plant.attack()
+        if plant.type == "passive":
+            plant.passive()
+        elif plant.type == "shoot":
+            plant.attack()
 
         # bullet move
-        if plant.bulletArr:
+        if plant.type == "shoot":
             for bullet in plant.bulletArr:
                 bullet.move()
                 if bullet.destroy and bullet in plant.bulletArr:
@@ -339,11 +365,10 @@ while carryOn:
             enemy.move()
 
     # update text
-    moneyTextRect = moneyFont.render(str(money), True, (0, 0, 0))
+    moneyTextRect = moneyFont.render(str(MONEY), True, (0, 0, 0))
 
     # clear screen
     pygame.draw.rect(screen, (0, 0, 0), [0, 0, WIDTH, HEIGHT])
-
 
     # draw tiles
     # tiles.draw()
@@ -357,7 +382,7 @@ while carryOn:
 
     # draw the plants and their bullets (if they have any)
     for plant in plants:
-        if plant.bulletArr:
+        if plant.type == "shoot":
             for bullet in plant.bulletArr:
                 if not bullet.destroy:
                     bullet.draw()
@@ -368,7 +393,13 @@ while carryOn:
     for enemy in enemyArr:
         enemy.draw()
 
-    screen.blit(moneyTextRect, (WIDTH - moneyTextRect.get_width() - 10, HEIGHT - moneyTextRect.get_height()- 10))
+    screen.blit(
+        moneyTextRect,
+        (
+            WIDTH - moneyTextRect.get_width() - 10,
+            HEIGHT - moneyTextRect.get_height() - 10,
+        ),
+    )
 
     # update screen
     pygame.display.flip()
