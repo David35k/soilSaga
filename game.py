@@ -84,7 +84,7 @@ class Bullet:
         if self.x >= WIDTH:
             plant.bulletArr.remove(self)
             self.destroy = True
-        
+
         # if collides with enemy deal damage
         for enemy in enemyArr:
             if self.x >= enemy.x and self.row == enemy.row:
@@ -141,7 +141,14 @@ class Card:
         self.plantName = plantName
 
     def place(self):
-        print("planted: " + self.plantName + ", row: " + str(tile[0]) + ", column: " + str(tile[1]))
+        print(
+            "planted: "
+            + self.plantName
+            + ", row: "
+            + str(tile[0])
+            + ", column: "
+            + str(tile[1])
+        )
 
         if currentCard.plantName == "corn":
             plants.append(CornPlant())
@@ -186,6 +193,23 @@ class ZombieBasic(Enemy):
         super().__init__(row, 1, 20, 50, False)
 
 
+class Wave:
+    def __init__(self, enemies, length):
+        # each array inside has [type of enemy, time to spawn (frames since start of wave)]
+        self.enemies = enemies
+        self.length = length  # length of wave in frames
+
+    def spawnEnemies(self):
+        for enemy in self.enemies:
+            # check if it is time to spawn
+            if enemy[1] <= 0:
+                if enemy[0] == "zombieBasic":
+                    enemyArr.append(ZombieBasic(random.randint(0, 4)))
+                    self.enemies.remove(enemy)
+            else:
+                enemy[1] -= 1
+
+
 # create all of the different types of cards
 cornCard = Card(0, 100, True, "corn")
 susCard = Card(1.1, 200, True, "sus")
@@ -193,13 +217,44 @@ susCard = Card(1.1, 200, True, "sus")
 cards = [cornCard, susCard]
 plants = []
 
-
-# bruh = ZombieBasic(6)
+testWave = Wave([["zombieBasic", 120], ["zombieBasic", 500], ["zombieBasic", 300]], 600)
+susWave = Wave(
+    [
+        ["zombieBasic", random.randint(0, 500)],
+        ["zombieBasic", random.randint(0, 500)],
+        ["zombieBasic", random.randint(0, 500)],
+        ["zombieBasic", random.randint(0, 500)],
+        ["zombieBasic", random.randint(0, 500)],
+        ["zombieBasic", random.randint(0, 500)],
+        ["zombieBasic", random.randint(0, 500)],
+        ["zombieBasic", random.randint(0, 500)],
+        ["zombieBasic", random.randint(0, 500)],
+        ["zombieBasic", random.randint(0, 500)],
+        ["zombieBasic", random.randint(0, 500)],
+        ["zombieBasic", random.randint(0, 500)],
+        ["zombieBasic", random.randint(0, 500)],
+        ["zombieBasic", random.randint(0, 500)],
+        ["zombieBasic", random.randint(0, 500)],
+        ["zombieBasic", random.randint(0, 500)],
+        ["zombieBasic", random.randint(0, 500)],
+        ["zombieBasic", random.randint(0, 500)],
+        ["zombieBasic", random.randint(0, 500)],
+        ["zombieBasic", random.randint(0, 500)],
+        ["zombieBasic", random.randint(0, 500)],
+        ["zombieBasic", random.randint(0, 500)],
+        ["zombieBasic", random.randint(0, 500)],
+        ["zombieBasic", random.randint(0, 500)],
+        ["zombieBasic", random.randint(0, 500)],
+        ["zombieBasic", random.randint(0, 500)],
+        ["zombieBasic", random.randint(0, 500)],
+    ],
+    500,
+)
 
 enemyArr = []
 
-for i in range(1):
-    enemyArr.append(ZombieBasic(random.randint(0, 4)))
+# for i in range(1):
+#     enemyArr.append(ZombieBasic(random.randint(0, 4)))
 
 while carryOn:
     # get check
@@ -248,6 +303,12 @@ while carryOn:
         if currentCard.picked:
             currentCard.posx = pygame.mouse.get_pos()[0] - 0.5 * currentCard.width
             currentCard.posy = pygame.mouse.get_pos()[1] - 0.5 * currentCard.height
+
+    # create enemies
+    testWave.spawnEnemies()
+    testWave.length -= 1
+    if testWave.length <= 0:
+        susWave.spawnEnemies()
 
     # plants attack
     for plant in plants:
