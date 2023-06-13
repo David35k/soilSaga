@@ -24,6 +24,12 @@ GREEN = (0, 255, 0)
 
 currentCard = 0
 
+# MONEY!!!
+money = 1000
+
+# Fonts 
+moneyFont = pygame.font.SysFont(None, 50)
+
 
 class Tiles:
     def __init__(self, tileWidth, tileHeight, rows, columns):
@@ -332,8 +338,12 @@ while carryOn:
             # enemies move
             enemy.move()
 
+    # update text
+    moneyTextRect = moneyFont.render(str(money), True, (0, 0, 0))
+
     # clear screen
     pygame.draw.rect(screen, (0, 0, 0), [0, 0, WIDTH, HEIGHT])
+
 
     # draw tiles
     # tiles.draw()
@@ -357,6 +367,8 @@ while carryOn:
     # draw the enemies
     for enemy in enemyArr:
         enemy.draw()
+
+    screen.blit(moneyTextRect, (WIDTH - moneyTextRect.get_width() - 10, HEIGHT - moneyTextRect.get_height()- 10))
 
     # update screen
     pygame.display.flip()
