@@ -109,7 +109,7 @@ class Plant:
 class MoneyTreePlant(Plant):
     def __init__(self):
         super().__init__(30, "passive")
-        self.rate = 500
+        self.rate = 60 * 4
         self.timer = 0
 
     def passive(self):
@@ -231,7 +231,7 @@ class Wave:
 currentCard = 0
 
 # MONEY!!!
-MONEY = 1000
+MONEY = 500
 
 # Fonts
 moneyFont = pygame.font.SysFont(None, 50)
@@ -244,38 +244,62 @@ cornCard = Card(1.1, 100, True, "corn")
 cards = [moneyCard, cornCard]
 plants = []
 
-testWave = Wave([["zombieBasic", 120], ["zombieBasic", 500], ["zombieBasic", 300]], 600)
+testWave = Wave([["zombieBasic", 120], ["zombieBasic", 500], ["zombieBasic", 300]], 60 * 15)
 susWave = Wave(
     [
-        ["zombieBasic", random.randint(0, 500)],
-        ["zombieBasic", random.randint(0, 500)],
-        ["zombieBasic", random.randint(0, 500)],
-        ["zombieBasic", random.randint(0, 500)],
-        ["zombieBasic", random.randint(0, 500)],
-        ["zombieBasic", random.randint(0, 500)],
-        ["zombieBasic", random.randint(0, 500)],
-        ["zombieBasic", random.randint(0, 500)],
-        ["zombieBasic", random.randint(0, 500)],
-        ["zombieBasic", random.randint(0, 500)],
-        ["zombieBasic", random.randint(0, 500)],
-        ["zombieBasic", random.randint(0, 500)],
-        ["zombieBasic", random.randint(0, 500)],
-        ["zombieBasic", random.randint(0, 500)],
-        ["zombieBasic", random.randint(0, 500)],
-        ["zombieBasic", random.randint(0, 500)],
-        ["zombieBasic", random.randint(0, 500)],
-        ["zombieBasic", random.randint(0, 500)],
-        ["zombieBasic", random.randint(0, 500)],
-        ["zombieBasic", random.randint(0, 500)],
-        ["zombieBasic", random.randint(0, 500)],
-        ["zombieBasic", random.randint(0, 500)],
-        ["zombieBasic", random.randint(0, 500)],
-        ["zombieBasic", random.randint(0, 500)],
-        ["zombieBasic", random.randint(0, 500)],
-        ["zombieBasic", random.randint(0, 500)],
-        ["zombieBasic", random.randint(0, 500)],
+        ["zombieBasic", random.randint(0, 1000)],
+        ["zombieBasic", random.randint(0, 1000)],
+        ["zombieBasic", random.randint(0, 1000)],
+        ["zombieBasic", random.randint(0, 1000)],
+        ["zombieBasic", random.randint(0, 1000)],
+        ["zombieBasic", random.randint(0, 1000)],
+        ["zombieBasic", random.randint(0, 1000)],
+        ["zombieBasic", random.randint(0, 1000)],
+        ["zombieBasic", random.randint(0, 1000)],
+        ["zombieBasic", random.randint(0, 1000)],
+        ["zombieBasic", random.randint(0, 1000)],
+        ["zombieBasic", random.randint(0, 1000)],
+        ["zombieBasic", random.randint(0, 1000)],
+        ["zombieBasic", random.randint(0, 1000)],
+        ["zombieBasic", random.randint(0, 1000)],
+        ["zombieBasic", random.randint(0, 1000)],
+        ["zombieBasic", random.randint(0, 1000)],
+        ["zombieBasic", random.randint(0, 1000)],
+        ["zombieBasic", random.randint(0, 1000)],
+        ["zombieBasic", random.randint(0, 1000)],
+        ["zombieBasic", random.randint(0, 1000)],
+        ["zombieBasic", random.randint(0, 1000)],
+        ["zombieBasic", random.randint(0, 1000)],
+        ["zombieBasic", random.randint(0, 1000)],
+        ["zombieBasic", random.randint(0, 1000)],
+        ["zombieBasic", random.randint(0, 1000)],
+        ["zombieBasic", random.randint(0, 1000)],
+        ["zombieBasic", random.randint(0, 1000)],
+        ["zombieBasic", random.randint(0, 1000)],
+        ["zombieBasic", random.randint(0, 1000)],
+        ["zombieBasic", random.randint(0, 1000)],
+        ["zombieBasic", random.randint(0, 1000)],
+        ["zombieBasic", random.randint(0, 1000)],
+        ["zombieBasic", random.randint(0, 1000)],
+        ["zombieBasic", random.randint(0, 1000)],
+        ["zombieBasic", random.randint(0, 1000)],
+        ["zombieBasic", random.randint(0, 1000)],
+        ["zombieBasic", random.randint(0, 1000)],
+        ["zombieBasic", random.randint(0, 1000)],
+        ["zombieBasic", random.randint(0, 1000)],
+        ["zombieBasic", random.randint(0, 1000)],
+        ["zombieBasic", random.randint(0, 1000)],
+        ["zombieBasic", random.randint(0, 1000)],
+        ["zombieBasic", random.randint(0, 1000)],
+        ["zombieBasic", random.randint(0, 1000)],
+        ["zombieBasic", random.randint(0, 1000)],
+        ["zombieBasic", random.randint(0, 1000)],
+        ["zombieBasic", random.randint(0, 1000)],
+        ["zombieBasic", random.randint(0, 1000)],
+        ["zombieBasic", random.randint(0, 1000)],
+        ["zombieBasic", random.randint(0, 1000)], 
     ],
-    500,
+    1000,
 )
 
 enemyArr = []
@@ -360,6 +384,7 @@ while carryOn:
         if enemy.dead and enemy in enemyArr:
             enemyArr.remove(enemy)
             del enemy
+            MONEY += 10
         else:
             # enemies move
             enemy.move()
