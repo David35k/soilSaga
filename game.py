@@ -101,6 +101,11 @@ class Plant:
         self.height = 50
         self.health = health
         self.type = type
+        self.dead = False
+
+    def checkDeath(self):
+        if self.health <= 0:
+            self.dead = True
 
     def draw(self):
         pygame.draw.rect(screen, ORANGE, [self.x, self.y, self.width, self.height])
@@ -125,9 +130,9 @@ class MoneyTreePlant(Plant):
 
 class CornPlant(Plant):
     def __init__(self):
-        super().__init__(50, "shoot")
+        super().__init__(60, "shoot")
         self.damage = 10
-        self.fireRate = 60  # lower means faster shooting
+        self.fireRate = 80  # lower means faster shooting
         self.shootTimer = 0
         self.bulletArr = []
 
@@ -194,9 +199,34 @@ class Enemy:
         self.damage = damage
         self.health = health
         self.dead = dead
+        self.attackTimer = 0
+        self.attackRate = 60
+        self.canMove = True
 
     def move(self):
-        self.x -= self.speed
+
+        if len(plants) == 0:
+            self.canMove = True
+
+        if self.canMove:
+            self.x -= self.speed
+
+        for plant in plants:
+            if (plant.y - 25) / 100 == self.row and self.x - 70 <= plant.x:
+                # print("SUS!")
+                self.attack(plant)
+                self.canMove = False
+            else: 
+                self.canMove = True
+            
+    
+
+    def attack(self, plant):
+        if self.attackTimer >= self.attackRate:
+            plant.health -= self.damage
+            self.attackTimer = 0
+
+        self.attackTimer += 1
 
     def checkDeath(self):
         if self.health <= 0:
@@ -208,7 +238,7 @@ class Enemy:
 
 class ZombieBasic(Enemy):
     def __init__(self, row):
-        super().__init__(row, 1, 20, 50, False)
+        super().__init__(row, 1, 30, 50, False)
 
 
 class Wave:
@@ -244,7 +274,9 @@ cornCard = Card(1.1, 100, True, "corn")
 cards = [moneyCard, cornCard]
 plants = []
 
-testWave = Wave([["zombieBasic", 120], ["zombieBasic", 500], ["zombieBasic", 300]], 60 * 15)
+testWave = Wave(
+    [["zombieBasic", 120], ["zombieBasic", 500], ["zombieBasic", 300]], 60 * 15
+)
 susWave = Wave(
     [
         ["zombieBasic", random.randint(0, 1000)],
@@ -297,7 +329,7 @@ susWave = Wave(
         ["zombieBasic", random.randint(0, 1000)],
         ["zombieBasic", random.randint(0, 1000)],
         ["zombieBasic", random.randint(0, 1000)],
-        ["zombieBasic", random.randint(0, 1000)], 
+        ["zombieBasic", random.randint(0, 1000)],
     ],
     1000,
 )
@@ -308,7 +340,7 @@ enemyArr = []
 #     enemyArr.append(ZombieBasic(random.randint(0, 4)))
 
 while carryOn:
-    # get check
+    # check for input
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             carryOn = False
@@ -365,18 +397,22 @@ while carryOn:
 
     # plants attack
     for plant in plants:
-        if plant.type == "passive":
-            plant.passive()
-        elif plant.type == "shoot":
-            plant.attack()
+        plant.checkDeath()
+        if plant.dead:
+            plants.remove(plant)
+            del plant
+        else:
+            if plant.type == "passive":
+                plant.passive()
+            elif plant.type == "shoot":
+                plant.attack()
 
-        # bullet move
-        if plant.type == "shoot":
-            for bullet in plant.bulletArr:
-                bullet.move()
-                if bullet.destroy and bullet in plant.bulletArr:
-                    plant.bulletArr.remove(bullet)
-                    del bullet
+                # bullet move
+                for bullet in plant.bulletArr:
+                    bullet.move()
+                    if bullet.destroy and bullet in plant.bulletArr:
+                        plant.bulletArr.remove(bullet)
+                        del bullet
 
     # check if enemy dead
     for enemy in enemyArr:
@@ -407,12 +443,12 @@ while carryOn:
 
     # draw the plants and their bullets (if they have any)
     for plant in plants:
+        plant.draw()
+
         if plant.type == "shoot":
             for bullet in plant.bulletArr:
                 if not bullet.destroy:
                     bullet.draw()
-
-        plant.draw()
 
     # draw the enemies
     for enemy in enemyArr:
