@@ -1,4 +1,4 @@
-import pygame, random, enemiesClasses, plantsClasses, utilClasses
+import pygame, random, utilClasses, spritesheet
 
 pygame.init()
 
@@ -21,22 +21,23 @@ WHITE = (255, 255, 255)
 BLUE = (0, 0, 255)
 PURPLE = (255, 0, 255)
 GREEN = (0, 255, 0)
-
-
-tiles = utilClasses.Tiles(100, 100, 5, 10)
-tiles.createTiles()
-
+BLACK = (0, 0, 0)
+CANCEL_COLOR = (255, 0, 231)
 
 currentCard = 0
 
 # MONEY!!!
-MONEY = 500
+MONEY = 1000
 
 # Fonts
 moneyFont = pygame.font.SysFont(None, 50)
 
+tiles = utilClasses.Tiles(100, 100, 5, 10)
+tiles.createTiles()
+
 # create all of the different types of cards
 moneyCard = utilClasses.Card(0, 50, True, "moneyTree")
+cornCard = utilClasses.Card(1.1, 100, True, "corn")
 cornCard = utilClasses.Card(1.1, 100, True, "corn")
 
 
@@ -104,6 +105,13 @@ susWave = utilClasses.Wave(
 )
 
 enemyArr = []
+
+sussy = pygame.image.load("images\corn\cornIdle.png").convert_alpha()
+
+sprite_sheet = spritesheet.Spritesheet(sussy)
+
+bruh = sprite_sheet.get_image(0, 32, 32, 2, CANCEL_COLOR)
+bruh2 = sprite_sheet.get_image(1, 32, 32, 2, CANCEL_COLOR)
 
 while carryOn:
     # check for input
@@ -196,7 +204,7 @@ while carryOn:
     moneyTextRect = moneyFont.render(str(MONEY), True, (0, 0, 0))
 
     # clear screen
-    pygame.draw.rect(screen, (0, 0, 0), [0, 0, WIDTH, HEIGHT])
+    pygame.draw.rect(screen, (50, 50, 50), [0, 0, WIDTH, HEIGHT])
 
     # draw tiles
     # tiles.draw()
@@ -221,6 +229,9 @@ while carryOn:
     for enemy in enemyArr:
         enemy.draw()
 
+    screen.blit(bruh, (0, 0))
+    screen.blit(bruh2, (32, 0))
+
     screen.blit(
         moneyTextRect,
         (
@@ -230,7 +241,7 @@ while carryOn:
     )
 
     # update screen
-    pygame.display.flip()
+    pygame.display.update()
     clock.tick(60)
 
 

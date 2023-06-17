@@ -1,4 +1,4 @@
-import pygame, game, random, plantsClasses
+import pygame, game
 
 
 class Enemy:
@@ -27,7 +27,6 @@ class Enemy:
                 and self.x - 70 <= plant.x
                 and self.x - 70 - self.speed >= plant.x - 10
             ):
-                # print("SUS!")
                 self.attack(plant)
                 self.canMove = False
             if plant.health <= 0:

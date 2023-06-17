@@ -1,4 +1,4 @@
-import pygame, game, random, enemiesClasses, utilClasses
+import pygame, game, utilClasses
 
 
 class Plant:
