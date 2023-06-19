@@ -110,8 +110,15 @@ sussy = pygame.image.load("images\corn\cornIdle.png").convert_alpha()
 
 sprite_sheet = spritesheet.Spritesheet(sussy)
 
-bruh = sprite_sheet.get_image(0, 32, 32, 2, CANCEL_COLOR)
-bruh2 = sprite_sheet.get_image(1, 32, 32, 2, CANCEL_COLOR)
+animation_list = []
+animation_steps = 4
+last_update = pygame.time.get_ticks()
+animation_cooldown = 250
+frame = 0
+
+for i in range(animation_steps):
+    animation_list.append(sprite_sheet.get_image(i, 32, 32, 2, CANCEL_COLOR))
+
 
 while carryOn:
     # check for input
@@ -229,8 +236,13 @@ while carryOn:
     for enemy in enemyArr:
         enemy.draw()
 
-    screen.blit(bruh, (0, 0))
-    screen.blit(bruh2, (32, 0))
+    current_time = pygame.time.get_ticks()
+    if current_time - last_update >= animation_cooldown:
+        frame += 1
+        if frame > 3:
+            frame = 0
+        last_update = pygame.time.get_ticks()
+    screen.blit(animation_list[frame], (0, 0))
 
     screen.blit(
         moneyTextRect,
