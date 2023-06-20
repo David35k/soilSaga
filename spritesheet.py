@@ -1,4 +1,4 @@
-import pygame
+import pygame, game
 
 class Spritesheet:
     def __init__(self, image):
@@ -11,6 +11,7 @@ class Spritesheet:
         image.set_colorkey(color)
 
         return image
+    
 
 class Sprite:
     def __init__(self, anims, current_anim, fps, frame):
@@ -20,7 +21,13 @@ class Sprite:
         self.frame = frame
         self.timer = 0
 
-    def animate(self):
-        if self.timer >= (60 / self.fps):
-            pass
+    def animate(self, x, y):
         self.timer += 1
+
+        if self.timer >= (60 / self.fps):
+            self.frame += 1
+            if self.frame >= 4:
+                self.frame = 0
+            self.timer = 0
+
+        game.screen.blit(self.anims[self.current_anim][self.frame], (x, y))

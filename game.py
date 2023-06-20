@@ -106,18 +106,23 @@ susWave = utilClasses.Wave(
 
 enemyArr = []
 
-sussy = pygame.image.load("images\corn\cornIdle.png").convert_alpha()
+IMPORT_SCALE = 2 # for images
 
-sprite_sheet = spritesheet.Spritesheet(sussy)
+# corn animations
+cornAnims = [[], []]
+cornIdle = pygame.image.load("images\corn\cornIdle.png").convert_alpha()
+cornIdleSheet = spritesheet.Spritesheet(cornIdle)
 
-animation_list = []
-animation_steps = 4
-last_update = pygame.time.get_ticks()
-animation_cooldown = 250
-frame = 0
+for i in range(4):
+    cornAnims[0].append(cornIdleSheet.get_image(i, 32, 32, IMPORT_SCALE, CANCEL_COLOR))
 
-for i in range(animation_steps):
-    animation_list.append(sprite_sheet.get_image(i, 32, 32, 2, CANCEL_COLOR))
+# corn animations
+moneyTreeAnims = [[], []]
+moneyTreeIdle = pygame.image.load("images\moneyTree\moneyTreeIdle.png").convert_alpha()
+moneyTreeIdleSheet = spritesheet.Spritesheet(moneyTreeIdle)
+
+for i in range(4):
+    moneyTreeAnims[0].append(moneyTreeIdleSheet.get_image(i, 32, 32, IMPORT_SCALE, CANCEL_COLOR))
 
 
 while carryOn:
@@ -225,7 +230,7 @@ while carryOn:
 
     # draw the plants and their bullets (if they have any)
     for plant in plants:
-        plant.draw()
+        plant.sprite.animate(plant.x, plant.y)
 
         if plant.type == "shoot":
             for bullet in plant.bulletArr:
@@ -236,13 +241,15 @@ while carryOn:
     for enemy in enemyArr:
         enemy.draw()
 
-    current_time = pygame.time.get_ticks()
-    if current_time - last_update >= animation_cooldown:
-        frame += 1
-        if frame > 3:
-            frame = 0
-        last_update = pygame.time.get_ticks()
-    screen.blit(animation_list[frame], (0, 0))
+    # current_time = pygame.time.get_ticks()
+    # if current_time - last_update >= animation_cooldown:
+    #     frame += 1
+    #     if frame > 3:
+    #         frame = 0
+    #     last_update = pygame.time.get_ticks()
+    # screen.blit(animation_list[frame], (0, 0))
+
+    
 
     screen.blit(
         moneyTextRect,

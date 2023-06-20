@@ -1,8 +1,8 @@
-import pygame, game, utilClasses
+import pygame, game, utilClasses, spritesheet
 
 
 class Plant:
-    def __init__(self, health, type, tile):
+    def __init__(self, health, type, tile, sprite):
         self.x = tile[1] * 100 + 25
         self.y = tile[0] * 100 + 25
         self.width = 50
@@ -11,6 +11,7 @@ class Plant:
         self.type = type
         self.dead = False
         self.tile = tile
+        self.sprite = sprite
 
     def checkDeath(self):
         if self.health <= 0:
@@ -24,7 +25,7 @@ class Plant:
 
 class MoneyTreePlant(Plant):
     def __init__(self):
-        super().__init__(30, "passive", game.tile)
+        super().__init__(30, "passive", game.tile, spritesheet.Sprite(game.moneyTreeAnims, 0, 4, 0))
         self.rate = 60 * 4
         self.timer = 0
 
@@ -40,7 +41,7 @@ class MoneyTreePlant(Plant):
 
 class CornPlant(Plant):
     def __init__(self):
-        super().__init__(60, "shoot", game.tile)
+        super().__init__(60, "shoot", game.tile, spritesheet.Sprite(game.cornAnims, 0, 4, 0))
         self.damage = 10
         self.fireRate = 80  # lower means faster shooting
         self.shootTimer = 0
