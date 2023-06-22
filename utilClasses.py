@@ -95,7 +95,7 @@ class Wave:
 
 
 class Card:
-    def __init__(self, order, cost, canPick, plantName):
+    def __init__(self, order, cost, canPick, plantName, image):
         self.width = 100
         self.height = 100
         self.order = order
@@ -105,6 +105,7 @@ class Card:
         self.posy = game.HEIGHT - self.height - 25
         self.picked = False
         self.plantName = plantName
+        self.image = image
 
     def place(self):
         print(
@@ -132,6 +133,7 @@ class Card:
         ):
             color = BLUE
 
-        pygame.draw.rect(
-            game.screen, color, [self.posx, self.posy, self.width, self.height]
-        )
+        # pygame.draw.rect(
+        #     game.screen, color, [self.posx, self.posy, self.width, self.height]
+        # )
+        game.screen.blit(self.image, (self.posx, self.posy))

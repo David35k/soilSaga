@@ -36,12 +36,15 @@ tiles = utilClasses.Tiles(100, 100, 5, 10)
 tiles.createTiles()
 
 # create all of the different types of cards
-moneyCard = utilClasses.Card(0, 50, True, "moneyTree")
-cornCard = utilClasses.Card(1.1, 100, True, "corn")
-cornCard = utilClasses.Card(1.1, 100, True, "corn")
+treeImage = pygame.image.load("images\cards/tree.png")
+treeImage = pygame.transform.scale(treeImage, (96, 96))
+moneyCard = utilClasses.Card(0, 50, True, "moneyTree", treeImage)
+cornImage = pygame.image.load("images\cards/corn.png")
+cornImage = pygame.transform.scale(cornImage, (96, 96))
+cornCard = utilClasses.Card(1.1, 100, True, "corn", cornImage)
+shovelCard = utilClasses.Card(5, 0, True, "shovel",treeImage)
 
-
-cards = [moneyCard, cornCard]
+cards = [moneyCard, cornCard, shovelCard]
 plants = []
 
 testWave = utilClasses.Wave(
@@ -160,12 +163,18 @@ while carryOn:
                         and pygame.mouse.get_pos()[1] >= tiles.tileWidth * tile[0]
                         and pygame.mouse.get_pos()[1]
                         <= tiles.tileWidth * tile[0] + tiles.tileHeight
-                        and tile[2]
                         and MONEY >= currentCard.cost
                     ):
-                        currentCard.place()
-                        MONEY -= currentCard.cost
-                        tile[2] = False  # cant plant there anymore
+                        if currentCard != shovelCard and tile[2]:
+                            currentCard.place()
+                            MONEY -= currentCard.cost
+                            tile[2] = False  # cant plant there anymore
+                        else:
+                            if tile[2] == False:
+                                for plant in plants:
+                                    if plant.tile == tile:
+                                        plant.health = 0
+
 
                 currentCard = 0
 
