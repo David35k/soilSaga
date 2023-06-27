@@ -60,3 +60,7 @@ class CornPlant(Plant):
             self.shootTimer = 0
 
         self.shootTimer += 1
+
+class CarrotPlant(Plant):
+    def __init__(self):
+        super().__init__(150, "block", game.tile, spritesheet.Sprite(game.carrotAnims, 0, 4, 0))

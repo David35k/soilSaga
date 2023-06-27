@@ -42,9 +42,14 @@ moneyCard = utilClasses.Card(0, 50, True, "moneyTree", treeImage)
 cornImage = pygame.image.load("images\cards/corn.png")
 cornImage = pygame.transform.scale(cornImage, (96, 96))
 cornCard = utilClasses.Card(1.1, 100, True, "corn", cornImage)
-shovelCard = utilClasses.Card(5, 0, True, "shovel",treeImage)
+carrotImage = pygame.image.load("images\cards/carrot.png")
+carrotImage = pygame.transform.scale(carrotImage, (96, 96))
+carrotCard = utilClasses.Card(2.2, 200, True, "carrot", carrotImage)
+shovelImage = pygame.image.load("images\cards/shovel.png")
+shovelImage = pygame.transform.scale(shovelImage, (96, 96))
+shovelCard = utilClasses.Card(5, 0, True, "shovel", shovelImage)
 
-cards = [moneyCard, cornCard, shovelCard]
+cards = [moneyCard, cornCard, carrotCard, shovelCard]
 plants = []
 
 testWave = utilClasses.Wave(
@@ -109,7 +114,7 @@ susWave = utilClasses.Wave(
 
 enemyArr = []
 
-IMPORT_SCALE = 2 # for images
+IMPORT_SCALE = 2  # for images
 
 # corn animations
 cornAnims = [[], []]
@@ -119,13 +124,25 @@ cornIdleSheet = spritesheet.Spritesheet(cornIdle)
 for i in range(4):
     cornAnims[0].append(cornIdleSheet.get_image(i, 32, 32, IMPORT_SCALE, CANCEL_COLOR))
 
-# corn animations
+# tree animations
 moneyTreeAnims = [[], []]
 moneyTreeIdle = pygame.image.load("images\moneyTree\moneyTreeIdle.png").convert_alpha()
 moneyTreeIdleSheet = spritesheet.Spritesheet(moneyTreeIdle)
 
 for i in range(4):
-    moneyTreeAnims[0].append(moneyTreeIdleSheet.get_image(i, 32, 32, IMPORT_SCALE, CANCEL_COLOR))
+    moneyTreeAnims[0].append(
+        moneyTreeIdleSheet.get_image(i, 32, 32, IMPORT_SCALE, CANCEL_COLOR)
+    )
+
+# carrot animations
+carrotAnims = [[], []]
+carrotIdle = pygame.image.load("images\carrot\carrotIdle.png").convert_alpha()
+carrotIdleSheet = spritesheet.Spritesheet(carrotIdle)
+
+for i in range(4):
+    carrotAnims[0].append(
+        carrotIdleSheet.get_image(i, 32, 32, IMPORT_SCALE, CANCEL_COLOR)
+    )
 
 
 while carryOn:
@@ -165,16 +182,14 @@ while carryOn:
                         <= tiles.tileWidth * tile[0] + tiles.tileHeight
                         and MONEY >= currentCard.cost
                     ):
-                        if currentCard != shovelCard and tile[2]:
+                        if currentCard.plantName == "shovel" and not tile[2]:
+                            for plant in plants:
+                                if plant.tile == tile:
+                                    plant.health = 0
+                        if currentCard.plantName != "shovel" and tile[2]:
                             currentCard.place()
                             MONEY -= currentCard.cost
                             tile[2] = False  # cant plant there anymore
-                        else:
-                            if tile[2] == False:
-                                for plant in plants:
-                                    if plant.tile == tile:
-                                        plant.health = 0
-
 
                 currentCard = 0
 
@@ -257,8 +272,6 @@ while carryOn:
     #         frame = 0
     #     last_update = pygame.time.get_ticks()
     # screen.blit(animation_list[frame], (0, 0))
-
-    
 
     screen.blit(
         moneyTextRect,
