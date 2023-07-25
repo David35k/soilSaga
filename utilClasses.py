@@ -87,9 +87,13 @@ class Wave:
         for enemy in self.enemies:
             # check if it is time to spawn
             if enemy[1] <= 0:
-                if enemy[0] == "zombieBasic":
-                    game.enemyArr.append(enemiesClasses.ZombieBasic(random.randint(0, 4)))
+                if enemy[0] == "robotBasic":
+                    game.enemyArr.append(enemiesClasses.RobotBasic(random.randint(0, 4)))
                     self.enemies.remove(enemy)
+                elif enemy[0] == "assaultBot":
+                    game.enemyArr.append(enemiesClasses.AssaultRobot(random.randint(0, 4)))
+                    self.enemies.remove(enemy)
+                
             else:
                 enemy[1] -= 1
 

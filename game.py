@@ -52,65 +52,14 @@ shovelCard = utilClasses.Card(5, 0, True, "shovel", shovelImage)
 cards = [moneyCard, cornCard, carrotCard, shovelCard]
 plants = []
 
-testWave = utilClasses.Wave(
-    [["zombieBasic", 120], ["zombieBasic", 500], ["zombieBasic", 300]], 60 * 15
+wave1 = utilClasses.Wave(
+    [["robotBasic", 120], ["assaultBot", 500], ["robotBasic", 300]], 60 * 15
 )
-susWave = utilClasses.Wave(
-    [
-        ["zombieBasic", random.randint(0, 1000)],
-        ["zombieBasic", random.randint(0, 1000)],
-        ["zombieBasic", random.randint(0, 1000)],
-        ["zombieBasic", random.randint(0, 1000)],
-        ["zombieBasic", random.randint(0, 1000)],
-        ["zombieBasic", random.randint(0, 1000)],
-        ["zombieBasic", random.randint(0, 1000)],
-        ["zombieBasic", random.randint(0, 1000)],
-        ["zombieBasic", random.randint(0, 1000)],
-        ["zombieBasic", random.randint(0, 1000)],
-        ["zombieBasic", random.randint(0, 1000)],
-        ["zombieBasic", random.randint(0, 1000)],
-        ["zombieBasic", random.randint(0, 1000)],
-        ["zombieBasic", random.randint(0, 1000)],
-        ["zombieBasic", random.randint(0, 1000)],
-        ["zombieBasic", random.randint(0, 1000)],
-        ["zombieBasic", random.randint(0, 1000)],
-        ["zombieBasic", random.randint(0, 1000)],
-        ["zombieBasic", random.randint(0, 1000)],
-        ["zombieBasic", random.randint(0, 1000)],
-        ["zombieBasic", random.randint(0, 1000)],
-        ["zombieBasic", random.randint(0, 1000)],
-        ["zombieBasic", random.randint(0, 1000)],
-        ["zombieBasic", random.randint(0, 1000)],
-        ["zombieBasic", random.randint(0, 1000)],
-        ["zombieBasic", random.randint(0, 1000)],
-        ["zombieBasic", random.randint(0, 1000)],
-        ["zombieBasic", random.randint(0, 1000)],
-        ["zombieBasic", random.randint(0, 1000)],
-        ["zombieBasic", random.randint(0, 1000)],
-        ["zombieBasic", random.randint(0, 1000)],
-        ["zombieBasic", random.randint(0, 1000)],
-        ["zombieBasic", random.randint(0, 1000)],
-        ["zombieBasic", random.randint(0, 1000)],
-        ["zombieBasic", random.randint(0, 1000)],
-        ["zombieBasic", random.randint(0, 1000)],
-        ["zombieBasic", random.randint(0, 1000)],
-        ["zombieBasic", random.randint(0, 1000)],
-        ["zombieBasic", random.randint(0, 1000)],
-        ["zombieBasic", random.randint(0, 1000)],
-        ["zombieBasic", random.randint(0, 1000)],
-        ["zombieBasic", random.randint(0, 1000)],
-        ["zombieBasic", random.randint(0, 1000)],
-        ["zombieBasic", random.randint(0, 1000)],
-        ["zombieBasic", random.randint(0, 1000)],
-        ["zombieBasic", random.randint(0, 1000)],
-        ["zombieBasic", random.randint(0, 1000)],
-        ["zombieBasic", random.randint(0, 1000)],
-        ["zombieBasic", random.randint(0, 1000)],
-        ["zombieBasic", random.randint(0, 1000)],
-        ["zombieBasic", random.randint(0, 1000)],
-    ],
-    1000,
-)
+# wave2 = utilClasses.Wave(
+#     [
+#         ["zombieBasic"]
+#     ]
+# )
 
 enemyArr = []
 
@@ -200,10 +149,10 @@ while carryOn:
             currentCard.posy = pygame.mouse.get_pos()[1] - 0.5 * currentCard.height
 
     # create enemies
-    testWave.spawnEnemies()
-    testWave.length -= 1
-    if testWave.length <= 0:
-        susWave.spawnEnemies()
+    wave1.spawnEnemies()
+    wave1.length -= 1
+    # if wave2.length <= 0:
+    #     wave2.spawnEnemies()
 
     # plants attack
     for plant in plants:

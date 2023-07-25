@@ -47,6 +47,10 @@ class Enemy:
         pygame.draw.rect(game.screen, game.GREEN, [self.x, self.y, 50, 50])
 
 
-class ZombieBasic(Enemy):
+class RobotBasic(Enemy):
     def __init__(self, row):
         super().__init__(row, 1, 30, 50, False)
+
+class AssaultRobot(Enemy):
+    def __init__(self, row):
+        super().__init__(row, 1.5, 40, 30, False)
