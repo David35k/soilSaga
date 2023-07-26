@@ -25,9 +25,12 @@ class Plant:
 
 class MoneyTreePlant(Plant):
     def __init__(self):
-        super().__init__(30, "passive", game.tile, spritesheet.Sprite(game.moneyTreeAnims, 0, 4, 0))
+        super().__init__(
+            30, "passive", game.tile, spritesheet.Sprite(game.moneyTreeAnims, 0, 4, 0)
+        )
         self.rate = 60 * 4
         self.timer = 0
+        self.name = "tree" # for debugging
 
     def passive(self):
         if self.timer < self.rate:
@@ -41,11 +44,14 @@ class MoneyTreePlant(Plant):
 
 class CornPlant(Plant):
     def __init__(self):
-        super().__init__(60, "shoot", game.tile, spritesheet.Sprite(game.cornAnims, 0, 4, 0))
+        super().__init__(
+            60, "shoot", game.tile, spritesheet.Sprite(game.cornAnims, 0, 4, 0)
+        )
         self.damage = 10
         self.fireRate = 80  # lower means faster shooting
         self.shootTimer = 0
         self.bulletArr = []
+        self.name = "corn" # for debugging
 
     # TODO: make it so that it only attacks if there is an enemy in its lane
     def attack(self):
@@ -61,6 +67,10 @@ class CornPlant(Plant):
 
         self.shootTimer += 1
 
+
 class CarrotPlant(Plant):
     def __init__(self):
-        super().__init__(150, "block", game.tile, spritesheet.Sprite(game.carrotAnims, 0, 4, 0))
+        super().__init__(
+            150, "block", game.tile, spritesheet.Sprite(game.carrotAnims, 0, 4, 0)
+        )
+        self.name = "carrot" # for debugging

@@ -1,5 +1,6 @@
 import pygame, game
 
+
 class Spritesheet:
     def __init__(self, image):
         self.sheet = image
@@ -11,7 +12,7 @@ class Spritesheet:
         image.set_colorkey(color)
 
         return image
-    
+
 
 class Sprite:
     def __init__(self, anims, current_anim, fps, frame):

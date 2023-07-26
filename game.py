@@ -53,7 +53,7 @@ cards = [moneyCard, cornCard, carrotCard, shovelCard]
 plants = []
 
 wave1 = utilClasses.Wave(
-    [["robotBasic", 120], ["assaultBot", 500], ["robotBasic", 300]], 60 * 15
+    [["robotBasic", 120], ["tractorBot", 500], ["assaultBot", 300]], 60 * 15
 )
 # wave2 = utilClasses.Wave(
 #     [
@@ -134,6 +134,14 @@ while carryOn:
                         if currentCard.plantName == "shovel" and not tile[2]:
                             for plant in plants:
                                 if plant.tile == tile:
+                                    print(
+                                        "removed: "
+                                        + plant.name
+                                        + ", row: "
+                                        + str(tile[0])
+                                        + ", column: "
+                                        + str(tile[1])
+                                    )
                                     plant.health = 0
                         if currentCard.plantName != "shovel" and tile[2]:
                             currentCard.place()
@@ -186,7 +194,7 @@ while carryOn:
             enemy.move()
 
     # update text
-    moneyTextRect = moneyFont.render(str(MONEY), True, (0, 0, 0))
+    moneyTextRect = moneyFont.render("$" + str(MONEY), True, (0, 0, 0))
 
     # clear screen
     pygame.draw.rect(screen, (50, 50, 50), [0, 0, WIDTH, HEIGHT])
@@ -213,14 +221,6 @@ while carryOn:
     # draw the enemies
     for enemy in enemyArr:
         enemy.draw()
-
-    # current_time = pygame.time.get_ticks()
-    # if current_time - last_update >= animation_cooldown:
-    #     frame += 1
-    #     if frame > 3:
-    #         frame = 0
-    #     last_update = pygame.time.get_ticks()
-    # screen.blit(animation_list[frame], (0, 0))
 
     screen.blit(
         moneyTextRect,

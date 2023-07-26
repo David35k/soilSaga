@@ -51,6 +51,12 @@ class RobotBasic(Enemy):
     def __init__(self, row):
         super().__init__(row, 1, 30, 50, False)
 
+
 class AssaultRobot(Enemy):
     def __init__(self, row):
-        super().__init__(row, 1.5, 40, 30, False)
+        super().__init__(row, 1.5, 50, 30, False)
+
+
+class TractorBot(Enemy):
+    def __init__(self, row):
+        super().__init__(row, 0.5, 500, 100, False)
