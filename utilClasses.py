@@ -102,6 +102,11 @@ class Wave:
                         enemiesClasses.TractorBot(random.randint(0, 4))
                     )
                     self.enemies.remove(enemy)
+                elif enemy[0] == "teleportBot":
+                    game.enemyArr.append(
+                        enemiesClasses.TeleportBot(random.randint(0, 4))
+                    )
+                    self.enemies.remove(enemy)
 
             else:
                 enemy[1] -= 1

@@ -53,7 +53,7 @@ cards = [moneyCard, cornCard, carrotCard, shovelCard]
 plants = []
 
 wave1 = utilClasses.Wave(
-    [["robotBasic", 120], ["tractorBot", 500], ["assaultBot", 300]], 60 * 15
+    [["robotBasic", 120], ["teleportBot", 500], ["assaultBot", 300]], 60 * 15
 )
 # wave2 = utilClasses.Wave(
 #     [
@@ -192,6 +192,11 @@ while carryOn:
         else:
             # enemies move
             enemy.move()
+
+    # check for enemy tp
+    for enemy in enemyArr:
+        if enemy.name == "teleport":
+            enemy.teleport()
 
     # update text
     moneyTextRect = moneyFont.render("$" + str(MONEY), True, (0, 0, 0))

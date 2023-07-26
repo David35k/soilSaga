@@ -50,13 +50,38 @@ class Enemy:
 class RobotBasic(Enemy):
     def __init__(self, row):
         super().__init__(row, 1, 30, 50, False)
+        self.name = "basic"
 
 
 class AssaultRobot(Enemy):
     def __init__(self, row):
-        super().__init__(row, 1.5, 50, 30, False)
-
+        super().__init__(row, 1.7, 50, 30, False)
+        self.name = "assault"
 
 class TractorBot(Enemy):
     def __init__(self, row):
         super().__init__(row, 0.5, 500, 100, False)
+        self.name = "tractor"
+
+class TeleportBot(Enemy):
+    def __init__(self, row):
+        super().__init__(row, 1.25, 0, 45, False)
+        self.name = "teleport"
+        self.tpTimer = 0
+    
+    def teleport(self):
+        if self.tpTimer >= 60 * 3:
+            self.x -= 100
+            self.canMove = True
+            self.tpTimer = 0
+
+        self.tpTimer += 1
+
+class LaneBot(Enemy):
+    def __init__(self, row):
+        super().__init__(row, 0.85, 30, 75, False)
+        self.name = "laneSwitch"
+        self.switchTimer = 0
+
+    def switch(self):
+        print("sus")
