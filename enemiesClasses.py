@@ -1,4 +1,4 @@
-import pygame, game
+import pygame, game, random
 
 
 class Enemy:
@@ -65,7 +65,7 @@ class TractorBot(Enemy):
 
 class TeleportBot(Enemy):
     def __init__(self, row):
-        super().__init__(row, 1.25, 0, 45, False)
+        super().__init__(row, 1, 0, 45, False)
         self.name = "teleport"
         self.tpTimer = 0
     
@@ -84,4 +84,10 @@ class LaneBot(Enemy):
         self.switchTimer = 0
 
     def switch(self):
-        print("sus")
+        if self.switchTimer >= 60 * 4:
+            self.row = random.randint(0, 4)
+            self.y = self.row * 100 + 25
+            self.canMove = True
+            self.switchTimer = 0
+
+        self.switchTimer += 1

@@ -107,6 +107,11 @@ class Wave:
                         enemiesClasses.TeleportBot(random.randint(0, 4))
                     )
                     self.enemies.remove(enemy)
+                elif enemy[0] == "laneBot":
+                    game.enemyArr.append(
+                        enemiesClasses.LaneBot(random.randint(0, 4))
+                    )
+                    self.enemies.remove(enemy)
 
             else:
                 enemy[1] -= 1
