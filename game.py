@@ -22,12 +22,12 @@ BLUE = (0, 0, 255)
 PURPLE = (255, 0, 255)
 GREEN = (0, 255, 0)
 BLACK = (0, 0, 0)
-CANCEL_COLOR = (255, 0, 231)
+CANCEL_COLOR = (255, 0, 231)  # FF00E7
 
 currentCard = 0
 
 # MONEY!!!
-MONEY = 1000
+MONEY = 1500
 
 # Fonts
 moneyFont = pygame.font.SysFont(None, 50)
@@ -45,15 +45,122 @@ cornCard = utilClasses.Card(1.1, 100, True, "corn", cornImage)
 carrotImage = pygame.image.load("images\cards/carrot.png")
 carrotImage = pygame.transform.scale(carrotImage, (96, 96))
 carrotCard = utilClasses.Card(2.2, 200, True, "carrot", carrotImage)
+cactusImage = pygame.image.load("images/cards/cactus.png")
+cactusImage = pygame.transform.scale(cactusImage, (96, 96))
+cactusCard = utilClasses.Card(3.3, 300, True, "cactus", cactusImage)
 shovelImage = pygame.image.load("images\cards/shovel.png")
 shovelImage = pygame.transform.scale(shovelImage, (96, 96))
-shovelCard = utilClasses.Card(5, 0, True, "shovel", shovelImage)
+shovelCard = utilClasses.Card(5.5, 0, True, "shovel", shovelImage)
 
-cards = [moneyCard, cornCard, carrotCard, shovelCard]
+cards = [moneyCard, cornCard, carrotCard, cactusCard, shovelCard]
 plants = []
 
 wave1 = utilClasses.Wave(
-    [["robotBasic", 120], ["laneBot", 500], ["assaultBot", 300]], 60 * 15
+    [
+        ["robotBasic", random.randint(1000, 5000)],
+        ["robotBasic", random.randint(1000, 5000)],
+        ["robotBasic", random.randint(1000, 5000)],
+        ["robotBasic", random.randint(1000, 5000)],
+        ["robotBasic", random.randint(1000, 5000)],
+        ["robotBasic", random.randint(1000, 5000)],
+        ["robotBasic", random.randint(1000, 5000)],
+        ["robotBasic", random.randint(1000, 5000)],
+        ["robotBasic", random.randint(1000, 5000)],
+        ["robotBasic", random.randint(1000, 5000)],
+        ["robotBasic", random.randint(1000, 5000)],
+        ["robotBasic", random.randint(1000, 5000)],
+        ["robotBasic", random.randint(1000, 5000)],
+        ["robotBasic", random.randint(1000, 5000)],
+        ["robotBasic", random.randint(1000, 5000)],
+        ["robotBasic", random.randint(1000, 5000)],
+        ["robotBasic", random.randint(1000, 5000)],
+        ["robotBasic", random.randint(1000, 5000)],
+        ["robotBasic", random.randint(1000, 5000)],
+        ["robotBasic", random.randint(1000, 5000)],
+        ["robotBasic", random.randint(1000, 5000)],
+        ["robotBasic", random.randint(1000, 5000)],
+        ["robotBasic", random.randint(1000, 5000)],
+        ["robotBasic", random.randint(1000, 5000)],
+        ["robotBasic", random.randint(1000, 5000)],
+        ["robotBasic", random.randint(1000, 5000)],
+        ["robotBasic", random.randint(1000, 5000)],
+        ["robotBasic", random.randint(1000, 5000)],
+        ["robotBasic", random.randint(1000, 5000)],
+        ["robotBasic", random.randint(1000, 5000)],
+        ["laneBot", random.randint(2000, 5000)],
+        ["laneBot", random.randint(2000, 5000)],
+        ["laneBot", random.randint(2000, 5000)],
+        ["laneBot", random.randint(2000, 5000)],
+        ["laneBot", random.randint(2000, 5000)],
+        ["laneBot", random.randint(2000, 5000)],
+        ["laneBot", random.randint(2000, 5000)],
+        ["laneBot", random.randint(2000, 5000)],
+        ["laneBot", random.randint(2000, 5000)],
+        ["laneBot", random.randint(2000, 5000)],
+        ["assaultBot", random.randint(3000, 5000)],
+        ["assaultBot", random.randint(3000, 5000)],
+        ["assaultBot", random.randint(3000, 5000)],
+        ["assaultBot", random.randint(3000, 5000)],
+        ["assaultBot", random.randint(3000, 5000)],
+        ["assaultBot", random.randint(3000, 5000)],
+        ["assaultBot", random.randint(3000, 5000)],
+        ["assaultBot", random.randint(3000, 5000)],
+        ["assaultBot", random.randint(3000, 5000)],
+        ["assaultBot", random.randint(3000, 5000)],
+        ["assaultBot", random.randint(3000, 5000)],
+        ["robotBasic", random.randint(1000, 5000)],
+        ["robotBasic", random.randint(1000, 5000)],
+        ["robotBasic", random.randint(1000, 5000)],
+        ["robotBasic", random.randint(1000, 5000)],
+        ["robotBasic", random.randint(1000, 5000)],
+        ["robotBasic", random.randint(1000, 5000)],
+        ["robotBasic", random.randint(1000, 5000)],
+        ["robotBasic", random.randint(1000, 5000)],
+        ["robotBasic", random.randint(1000, 5000)],
+        ["robotBasic", random.randint(1000, 5000)],
+        ["robotBasic", random.randint(1000, 5000)],
+        ["robotBasic", random.randint(1000, 5000)],
+        ["robotBasic", random.randint(1000, 5000)],
+        ["robotBasic", random.randint(1000, 5000)],
+        ["robotBasic", random.randint(1000, 5000)],
+        ["robotBasic", random.randint(1000, 5000)],
+        ["robotBasic", random.randint(1000, 5000)],
+        ["robotBasic", random.randint(1000, 5000)],
+        ["robotBasic", random.randint(1000, 5000)],
+        ["robotBasic", random.randint(1000, 5000)],
+        ["robotBasic", random.randint(1000, 5000)],
+        ["robotBasic", random.randint(1000, 5000)],
+        ["robotBasic", random.randint(1000, 5000)],
+        ["robotBasic", random.randint(1000, 5000)],
+        ["robotBasic", random.randint(1000, 5000)],
+        ["robotBasic", random.randint(1000, 5000)],
+        ["robotBasic", random.randint(1000, 5000)],
+        ["robotBasic", random.randint(1000, 5000)],
+        ["robotBasic", random.randint(1000, 5000)],
+        ["robotBasic", random.randint(1000, 5000)],
+        ["laneBot", random.randint(2000, 5000)],
+        ["laneBot", random.randint(2000, 5000)],
+        ["laneBot", random.randint(2000, 5000)],
+        ["laneBot", random.randint(2000, 5000)],
+        ["laneBot", random.randint(2000, 5000)],
+        ["laneBot", random.randint(2000, 5000)],
+        ["laneBot", random.randint(2000, 5000)],
+        ["laneBot", random.randint(2000, 5000)],
+        ["laneBot", random.randint(2000, 5000)],
+        ["laneBot", random.randint(2000, 5000)],
+        ["assaultBot", random.randint(3000, 5000)],
+        ["assaultBot", random.randint(3000, 5000)],
+        ["assaultBot", random.randint(3000, 5000)],
+        ["assaultBot", random.randint(3000, 5000)],
+        ["assaultBot", random.randint(3000, 5000)],
+        ["assaultBot", random.randint(3000, 5000)],
+        ["assaultBot", random.randint(3000, 5000)],
+        ["assaultBot", random.randint(3000, 5000)],
+        ["assaultBot", random.randint(3000, 5000)],
+        ["assaultBot", random.randint(3000, 5000)],
+        ["assaultBot", random.randint(3000, 5000)],
+    ],
+    5000,
 )
 # wave2 = utilClasses.Wave(
 #     [
@@ -91,6 +198,16 @@ carrotIdleSheet = spritesheet.Spritesheet(carrotIdle)
 for i in range(4):
     carrotAnims[0].append(
         carrotIdleSheet.get_image(i, 32, 32, IMPORT_SCALE, CANCEL_COLOR)
+    )
+
+# cactus animations
+cactusAnims = [[], []]
+cactusIdle = pygame.image.load("images\cactus\cactusIdle.png").convert_alpha()
+cactusIdleSheet = spritesheet.Spritesheet(cactusIdle)
+
+for i in range(4):
+    cactusAnims[0].append(
+        cactusIdleSheet.get_image(i, 32, 32, IMPORT_SCALE, CANCEL_COLOR)
     )
 
 

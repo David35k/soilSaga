@@ -30,7 +30,7 @@ class MoneyTreePlant(Plant):
         )
         self.rate = 60 * 4
         self.timer = 0
-        self.name = "tree" # for debugging
+        self.name = "tree"  # for debugging
 
     def passive(self):
         if self.timer < self.rate:
@@ -51,20 +51,25 @@ class CornPlant(Plant):
         self.fireRate = 80  # lower means faster shooting
         self.shootTimer = 0
         self.bulletArr = []
-        self.name = "corn" # for debugging
+        self.name = "corn"  # for debugging
 
-    # TODO: make it so that it only attacks if there is an enemy in its lane
     def attack(self):
-        # if the timer is less than what it should be dont fire, otherwise do
-        if self.shootTimer < self.fireRate:
-            pass
-        elif self.shootTimer >= self.fireRate:
-            # add a new bullet to the bullet array
-            self.bulletArr.append(
-                utilClasses.Bullet(self, 5, self.damage, (self.y - 25) / 100)
-            )
-            self.shootTimer = 0
+        # check if enemies in the same lane
+        shoot = False
+        for enemy in game.enemyArr:
+            if enemy.row == self.tile[0]:
+                shoot = True
 
+        if shoot:
+            # if the timer is less than what it should be dont fire, otherwise do
+            if self.shootTimer < self.fireRate:
+                pass
+            elif self.shootTimer >= self.fireRate:
+                # add a new bullet to the bullet array
+                self.bulletArr.append(
+                    utilClasses.Bullet(self, 5, self.damage, (self.y - 25) / 100)
+                )
+                self.shootTimer = 0
         self.shootTimer += 1
 
 
@@ -73,4 +78,35 @@ class CarrotPlant(Plant):
         super().__init__(
             150, "block", game.tile, spritesheet.Sprite(game.carrotAnims, 0, 4, 0)
         )
-        self.name = "carrot" # for debugging
+        self.name = "carrot"  # for debugging
+
+
+class CactusPlant(Plant):
+    def __init__(self):
+        super().__init__(
+            50, "shoot", game.tile, spritesheet.Sprite(game.cactusAnims, 0, 4, 0)
+        )
+        self.damage = 5
+        self.fireRate = 150  # lower means faster shooting
+        self.shootTimer = 0
+        self.bulletArr = []
+        self.name = "cactus"  # for debugging
+
+    def attack(self):
+        # check if enemies are in the same lane
+        shoot = False
+        for enemy in game.enemyArr:
+            if enemy.row == self.tile[0]:
+                shoot = True
+
+        if shoot:
+            # if the timer is less than what it should be dont fire, otherwise do
+            if self.shootTimer < self.fireRate:
+                pass
+            elif self.shootTimer >= self.fireRate:
+                # add a new bullet to the bullet array
+                self.bulletArr.append(
+                    utilClasses.Bullet(self, 5, self.damage, (self.y - 25) / 100)
+                )
+                self.shootTimer = 0
+        self.shootTimer += 1

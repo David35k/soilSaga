@@ -71,6 +71,11 @@ class Bullet:
         for enemy in game.enemyArr:
             if self.x >= enemy.x and self.x <= enemy.x + 50 and self.row == enemy.row:
                 enemy.health -= self.damage
+
+                # if cactus bullet slow down
+                if self.plant.name == "cactus":
+                    enemy.speed /= 1.5
+
                 self.destroy = True
 
     def draw(self):
@@ -108,9 +113,7 @@ class Wave:
                     )
                     self.enemies.remove(enemy)
                 elif enemy[0] == "laneBot":
-                    game.enemyArr.append(
-                        enemiesClasses.LaneBot(random.randint(0, 4))
-                    )
+                    game.enemyArr.append(enemiesClasses.LaneBot(random.randint(0, 4)))
                     self.enemies.remove(enemy)
 
             else:
@@ -146,6 +149,8 @@ class Card:
             game.plants.append(plantsClasses.CornPlant())
         elif game.currentCard.plantName == "carrot":
             game.plants.append(plantsClasses.CarrotPlant())
+        elif game.currentCard.plantName == "cactus":
+            game.plants.append(plantsClasses.CactusPlant())
 
     def draw(self):
         color = ORANGE
