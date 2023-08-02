@@ -76,9 +76,42 @@ class CornPlant(Plant):
 class CarrotPlant(Plant):
     def __init__(self):
         super().__init__(
-            150, "block", game.tile, spritesheet.Sprite(game.carrotAnims, 0, 4, 0)
+            65, "shoot", game.tile, spritesheet.Sprite(game.carrotAnims, 0, 4, 0)
         )
+        self.damage = 15
+        self.fireRate = 200  # lower means faster shooting
+        self.shootTimer = 0
+        self.bulletArr = []
         self.name = "carrot"  # for debugging
+        self.bulletCount = 0
+
+    def attack(self):
+        # check if enemies in the same lane
+        shoot = False
+        for enemy in game.enemyArr:
+            if enemy.row == self.tile[0]:
+                shoot = True
+
+
+        if shoot:
+            # if the timer is less than what it should be dont fire, otherwise do
+            if self.shootTimer < self.fireRate:
+                pass
+            elif self.shootTimer >= self.fireRate and self.BulletCount <= 6:
+                print(self.bulletCount)
+                if count == 6:
+                    self.fireRate = 200
+                else:
+                    self.fireRate = 10
+                
+                # add 6 new bullets to the bullet array
+                print("bullet fired!!")
+                self.bulletArr.append(
+                    utilClasses.Bullet(self, 5, self.damage, (self.y - 25) / 100)
+                )
+                self.shootTimer = 0
+                count += 1
+        self.shootTimer += 1
 
 
 class CactusPlant(Plant):
