@@ -57,7 +57,7 @@ plants = []
 
 wave1 = utilClasses.Wave(
     [
-        ["robotBasic", random.randint(1000, 5000)],
+        ["robotBasic", 60],
         ["robotBasic", random.randint(1000, 5000)],
         ["robotBasic", random.randint(1000, 5000)],
         ["robotBasic", random.randint(1000, 5000)],
