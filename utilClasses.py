@@ -151,6 +151,8 @@ class Card:
             game.plants.append(plantsClasses.CarrotPlant())
         elif game.currentCard.plantName == "cactus":
             game.plants.append(plantsClasses.CactusPlant())
+        elif game.currentCard.plantName == "bamboo":
+            game.plants.append(plantsClasses.BambooPlant())
 
     def draw(self):
         color = ORANGE

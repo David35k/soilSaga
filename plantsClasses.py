@@ -48,7 +48,7 @@ class CornPlant(Plant):
             60, "shoot", game.tile, spritesheet.Sprite(game.cornAnims, 0, 4, 0)
         )
         self.damage = 10
-        self.fireRate = 80  # lower means faster shooting
+        self.fireRate = 65  # lower means faster shooting
         self.shootTimer = 0
         self.bulletArr = []
         self.name = "corn"  # for debugging
@@ -101,7 +101,7 @@ class CarrotPlant(Plant):
 
                 if self.shootTimer % 10 == 0:
                     self.bulletArr.append(
-                        utilClasses.Bullet(self, 5, self.damage, (self.y - 25) / 100)
+                        utilClasses.Bullet(self, 4, self.damage, (self.y - 25) / 100)
                     )
                     self.bulletCount += 1
                 if self.bulletCount == 6:
@@ -136,7 +136,38 @@ class CactusPlant(Plant):
             elif self.shootTimer >= self.fireRate:
                 # add a new bullet to the bullet array
                 self.bulletArr.append(
-                    utilClasses.Bullet(self, 5, self.damage, (self.y - 25) / 100)
+                    utilClasses.Bullet(self, 8, self.damage, (self.y - 25) / 100)
+                )
+                self.shootTimer = 0
+        self.shootTimer += 1
+
+class BambooPlant(Plant):
+    def __init__(self):
+        super().__init__(30, "shoot", game.tile, spritesheet.Sprite(game.cactusAnims, 0, 4, 0))
+        self.damage = 8
+        self.fireRate = 80  # lower means faster shooting
+        self.shootTimer = 0
+        self.bulletArr = []
+        self.name = "bamboo"  # for debugging
+
+    def attack(self):
+        # check if enemies are in the same lane
+        shoot = False
+        for enemy in game.enemyArr:
+            if enemy.row == self.tile[0]:
+                shoot = True
+
+        if shoot:
+            # if the timer is less than what it should be dont fire, otherwise do
+            if self.shootTimer < self.fireRate:
+                pass
+            elif self.shootTimer >= self.fireRate:
+                # add two new bullets to the bullet array, one going the opposite way
+                self.bulletArr.append(
+                    utilClasses.Bullet(self, 5, self.damage, (self.y - 25) / 100 - 10)
+                )
+                self.bulletArr.append(
+                    utilClasses.Bullet(self, -5, self.damage, (self.y - 25) / 100 + 10)
                 )
                 self.shootTimer = 0
         self.shootTimer += 1

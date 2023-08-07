@@ -36,23 +36,26 @@ tiles = utilClasses.Tiles(100, 100, 5, 10)
 tiles.createTiles()
 
 # create all of the different types of cards
-treeImage = pygame.image.load("images\cards/tree.png")
+treeImage = pygame.image.load("images/cards/tree.png")
 treeImage = pygame.transform.scale(treeImage, (96, 96))
 moneyCard = utilClasses.Card(0, 50, True, "moneyTree", treeImage)
-cornImage = pygame.image.load("images\cards/corn.png")
+cornImage = pygame.image.load("images/cards/corn.png")
 cornImage = pygame.transform.scale(cornImage, (96, 96))
 cornCard = utilClasses.Card(1.1, 100, True, "corn", cornImage)
-carrotImage = pygame.image.load("images\cards/carrot.png")
+carrotImage = pygame.image.load("images/cards/carrot.png")
 carrotImage = pygame.transform.scale(carrotImage, (96, 96))
 carrotCard = utilClasses.Card(3.3, 500, True, "carrot", carrotImage)
 cactusImage = pygame.image.load("images/cards/cactus.png")
 cactusImage = pygame.transform.scale(cactusImage, (96, 96))
 cactusCard = utilClasses.Card(2.2, 300, True, "cactus", cactusImage)
-shovelImage = pygame.image.load("images\cards/shovel.png")
+shovelImage = pygame.image.load("images/cards/shovel.png")
 shovelImage = pygame.transform.scale(shovelImage, (96, 96))
 shovelCard = utilClasses.Card(5.5, 0, True, "shovel", shovelImage)
+bambooImage = pygame.image.load("images/cards/bamboo.png")
+bambooImage = pygame.transform.scale(bambooImage, (96, 96))
+bambooCard = utilClasses.Card(4.4, 200, True, "bamboo", bambooImage)
 
-cards = [moneyCard, cornCard, carrotCard, cactusCard, shovelCard]
+cards = [moneyCard, cornCard, carrotCard, cactusCard, bambooCard, shovelCard]
 plants = []
 
 wave1 = utilClasses.Wave(
@@ -174,7 +177,7 @@ IMPORT_SCALE = 2  # for images
 
 # corn animations
 cornAnims = [[], []]
-cornIdle = pygame.image.load("images\corn\cornIdle.png").convert_alpha()
+cornIdle = pygame.image.load("images/corn/cornIdle.png").convert_alpha()
 cornIdleSheet = spritesheet.Spritesheet(cornIdle)
 
 for i in range(4):
@@ -182,7 +185,7 @@ for i in range(4):
 
 # tree animations
 moneyTreeAnims = [[], []]
-moneyTreeIdle = pygame.image.load("images\moneyTree\moneyTreeIdle.png").convert_alpha()
+moneyTreeIdle = pygame.image.load("images/moneyTree/moneyTreeIdle.png").convert_alpha()
 moneyTreeIdleSheet = spritesheet.Spritesheet(moneyTreeIdle)
 
 for i in range(4):
@@ -192,7 +195,7 @@ for i in range(4):
 
 # carrot animations
 carrotAnims = [[], []]
-carrotIdle = pygame.image.load("images\carrot\carrotIdle.png").convert_alpha()
+carrotIdle = pygame.image.load("images/carrot/carrotIdle.png").convert_alpha()
 carrotIdleSheet = spritesheet.Spritesheet(carrotIdle)
 
 for i in range(4):
@@ -202,8 +205,18 @@ for i in range(4):
 
 # cactus animations
 cactusAnims = [[], []]
-cactusIdle = pygame.image.load("images\cactus\cactusIdle.png").convert_alpha()
+cactusIdle = pygame.image.load("images/cactus/cactusIdle.png").convert_alpha()
 cactusIdleSheet = spritesheet.Spritesheet(cactusIdle)
+
+for i in range(4):
+    cactusAnims[0].append(
+        cactusIdleSheet.get_image(i, 32, 32, IMPORT_SCALE, CANCEL_COLOR)
+    )
+
+# bamboo animations
+bambooAnims = [[], []]
+bambooIdle = pygame.image.load("images/bamboo/bambooIdle.png").convert_alpha()
+bambooIdleSheet = spritesheet.Spritesheet(bambooIdle)
 
 for i in range(4):
     cactusAnims[0].append(
