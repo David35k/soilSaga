@@ -143,7 +143,7 @@ class CactusPlant(Plant):
 
 class BambooPlant(Plant):
     def __init__(self):
-        super().__init__(30, "shoot", game.tile, spritesheet.Sprite(game.cactusAnims, 0, 4, 0))
+        super().__init__(30, "shoot", game.tile, spritesheet.Sprite(game.bambooAnims, 0, 4, 0))
         self.damage = 8
         self.fireRate = 80  # lower means faster shooting
         self.shootTimer = 0
@@ -164,10 +164,10 @@ class BambooPlant(Plant):
             elif self.shootTimer >= self.fireRate:
                 # add two new bullets to the bullet array, one going the opposite way
                 self.bulletArr.append(
-                    utilClasses.Bullet(self, 5, self.damage, (self.y - 25) / 100 - 10)
+                    utilClasses.Bullet(self, 5, self.damage, (self.y - 25) / 100)
                 )
                 self.bulletArr.append(
-                    utilClasses.Bullet(self, -5, self.damage, (self.y - 25) / 100 + 10)
+                    utilClasses.Bullet(self, -5, self.damage, (self.y - 25) / 100)
                 )
                 self.shootTimer = 0
         self.shootTimer += 1

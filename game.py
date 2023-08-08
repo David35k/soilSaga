@@ -173,7 +173,7 @@ wave1 = utilClasses.Wave(
 
 enemyArr = []
 
-IMPORT_SCALE = 2  # for images
+IMPORT_SCALE = 3 # for images
 
 # corn animations
 cornAnims = [[], []]
@@ -219,8 +219,8 @@ bambooIdle = pygame.image.load("images/bamboo/bambooIdle.png").convert_alpha()
 bambooIdleSheet = spritesheet.Spritesheet(bambooIdle)
 
 for i in range(4):
-    cactusAnims[0].append(
-        cactusIdleSheet.get_image(i, 32, 32, IMPORT_SCALE, CANCEL_COLOR)
+    bambooAnims[0].append(
+        bambooIdleSheet.get_image(i, 32, 32, IMPORT_SCALE, CANCEL_COLOR)
     )
 
 
@@ -348,7 +348,7 @@ while carryOn:
 
     # draw the plants and their bullets (if they have any)
     for plant in plants:
-        plant.sprite.animate(plant.x, plant.y)
+        plant.sprite.animate(plant.x - 25, plant.y - 25)
 
         if plant.type == "shoot":
             for bullet in plant.bulletArr:
