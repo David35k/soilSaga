@@ -179,9 +179,12 @@ IMPORT_SCALE = 3 # for images
 cornAnims = [[], []]
 cornIdle = pygame.image.load("images/corn/cornIdle.png").convert_alpha()
 cornIdleSheet = spritesheet.Spritesheet(cornIdle)
+cornShoot = pygame.image.load("images/corn/cornShoot.png").convert_alpha()
+cornShootSheet = spritesheet.Spritesheet(cornShoot)
 
 for i in range(4):
     cornAnims[0].append(cornIdleSheet.get_image(i, 32, 32, IMPORT_SCALE, CANCEL_COLOR))
+    cornAnims[1].append(cornShootSheet.get_image(i, 32, 32, IMPORT_SCALE, CANCEL_COLOR))
 
 # tree animations
 moneyTreeAnims = [[], []]
