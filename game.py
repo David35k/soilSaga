@@ -173,9 +173,9 @@ wave1 = utilClasses.Wave(
 
 enemyArr = []
 
-IMPORT_SCALE = 3 # for images
+IMPORT_SCALE = 3  # for images
 
-# corn animations
+# ---------- corn animations ----------
 cornAnims = [[], []]
 cornIdle = pygame.image.load("images/corn/cornIdle.png").convert_alpha()
 cornIdleSheet = spritesheet.Spritesheet(cornIdle)
@@ -186,7 +186,17 @@ for i in range(4):
     cornAnims[0].append(cornIdleSheet.get_image(i, 32, 32, IMPORT_SCALE, CANCEL_COLOR))
     cornAnims[1].append(cornShootSheet.get_image(i, 32, 32, IMPORT_SCALE, CANCEL_COLOR))
 
-# tree animations
+# bullet
+cornBulletAnim = [[]]
+cornBullet = pygame.image.load("images/corn/cornBullet.png").convert_alpha()
+cornBulletSheet = spritesheet.Spritesheet(cornBullet)
+
+for i in range(4):
+    cornBulletAnim[0].append(
+        cornBulletSheet.get_image(i, 32, 32, IMPORT_SCALE, CANCEL_COLOR)
+    )
+
+# ---------- tree animations ----------
 moneyTreeAnims = [[], []]
 moneyTreeIdle = pygame.image.load("images/moneyTree/moneyTreeIdle.png").convert_alpha()
 moneyTreeIdleSheet = spritesheet.Spritesheet(moneyTreeIdle)
@@ -196,7 +206,7 @@ for i in range(4):
         moneyTreeIdleSheet.get_image(i, 32, 32, IMPORT_SCALE, CANCEL_COLOR)
     )
 
-# carrot animations
+# ---------- carrot animations ----------
 carrotAnims = [[], []]
 carrotIdle = pygame.image.load("images/carrot/carrotIdle.png").convert_alpha()
 carrotIdleSheet = spritesheet.Spritesheet(carrotIdle)
@@ -206,17 +216,22 @@ for i in range(4):
         carrotIdleSheet.get_image(i, 32, 32, IMPORT_SCALE, CANCEL_COLOR)
     )
 
-# cactus animations
+# ---------- cactus animations ----------
 cactusAnims = [[], []]
 cactusIdle = pygame.image.load("images/cactus/cactusIdle.png").convert_alpha()
 cactusIdleSheet = spritesheet.Spritesheet(cactusIdle)
+cactusShoot = pygame.image.load("images/cactus/cactusShoot.png").convert_alpha()
+cactusShootSheet = spritesheet.Spritesheet(cactusShoot)
 
 for i in range(4):
     cactusAnims[0].append(
         cactusIdleSheet.get_image(i, 32, 32, IMPORT_SCALE, CANCEL_COLOR)
     )
+    cactusAnims[1].append(
+        cactusShootSheet.get_image(i, 32, 32, IMPORT_SCALE, CANCEL_COLOR)
+    )
 
-# bamboo animations
+# ---------- bamboo animations ----------
 bambooAnims = [[], []]
 bambooIdle = pygame.image.load("images/bamboo/bambooIdle.png").convert_alpha()
 bambooIdleSheet = spritesheet.Spritesheet(bambooIdle)
@@ -356,7 +371,7 @@ while carryOn:
         if plant.type == "shoot":
             for bullet in plant.bulletArr:
                 if not bullet.destroy:
-                    bullet.draw()
+                    bullet.sprite.animate(bullet.x - 35, plant.y - 17)
 
     # draw the enemies
     for enemy in enemyArr:

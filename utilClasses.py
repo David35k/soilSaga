@@ -50,13 +50,17 @@ class Tiles:
 
 
 class Bullet:
-    def __init__(self, plant, speed, damage, row):
+    def __init__(self, plant, speed, damage, row, offsetX, offsetY, sprite):
         self.plant = plant
         self.speed = speed
         self.damage = damage
-        self.x = plant.x
+        self.offsetX = offsetX
+        self.offsetY = offsetY
+        self.x = plant.x + offsetX
         self.destroy = False
         self.row = row
+        self.sprite = sprite
+
 
     def move(self):
         # update position
@@ -79,7 +83,7 @@ class Bullet:
                 self.destroy = True
 
     def draw(self):
-        pygame.draw.rect(game.screen, PURPLE, [self.x, game.plant.y + 12.5, 25, 25])
+        pygame.draw.rect(game.screen, PURPLE, [self.x, game.plant.y + self.offsetY, 25, 25])
 
 
 class Wave:
