@@ -49,6 +49,20 @@ class Tiles:
             )
 
 
+class TipWindow:
+    def __init__(self, x, y, width, height, message):
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+        self.message = message
+
+    def draw(self):
+        pygame.draw.rect(
+            game.screen, game.WHITE, [self.x, self.y, self.width, self.height]
+        )
+
+
 class Bullet:
     def __init__(self, plant, speed, damage, row, offsetX, offsetY, sprite):
         self.plant = plant
@@ -60,7 +74,6 @@ class Bullet:
         self.destroy = False
         self.row = row
         self.sprite = sprite
-
 
     def move(self):
         # update position
@@ -83,7 +96,9 @@ class Bullet:
                 self.destroy = True
 
     def draw(self):
-        pygame.draw.rect(game.screen, PURPLE, [self.x, game.plant.y + self.offsetY, 25, 25])
+        pygame.draw.rect(
+            game.screen, PURPLE, [self.x, game.plant.y + self.offsetY, 25, 25]
+        )
 
 
 class Wave:

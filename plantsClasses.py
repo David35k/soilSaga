@@ -28,7 +28,7 @@ class MoneyTreePlant(Plant):
         super().__init__(
             30, "passive", game.tile, spritesheet.Sprite(game.moneyTreeAnims, 0, 4, 0)
         )
-        self.rate = 60 * 4
+        self.rate = 60 * 6
         self.timer = 0
         self.name = "tree"  # for debugging
 
@@ -47,7 +47,7 @@ class CornPlant(Plant):
         super().__init__(
             60, "shoot", game.tile, spritesheet.Sprite(game.cornAnims, 0, 4, 0)
         )
-        self.damage = 10
+        self.damage = 7
         self.fireRate = 60  # lower means faster shooting
         self.shootTimer = (
             self.fireRate - 15
@@ -74,7 +74,7 @@ class CornPlant(Plant):
             self.sprite = spritesheet.Sprite(game.cornAnims, 1, 4, 0)
         elif self.currentAnim == "shoot" and not shoot:
             self.currentAnim = "idle"
-            self.sprite = spritesheet.Sprite(game.cornAnims, 0, 4,  random.randint(0, 3))
+            self.sprite = spritesheet.Sprite(game.cornAnims, 0, 4, random.randint(0, 3))
 
         # shoot!!!
         if shoot:
@@ -106,7 +106,7 @@ class CarrotPlant(Plant):
         super().__init__(
             65, "shoot", game.tile, spritesheet.Sprite(game.carrotAnims, 0, 4, 0)
         )
-        self.damage = 15
+        self.damage = 12
         self.fireRate = 200  # lower means faster shooting
         self.shootTimer = 0
         self.bulletArr = []
@@ -129,7 +129,15 @@ class CarrotPlant(Plant):
 
                 if self.shootTimer % 10 == 0:
                     self.bulletArr.append(
-                        utilClasses.Bullet(self, 4, self.damage, (self.y - 25) / 100)
+                        utilClasses.Bullet(
+                            self,
+                            4,
+                            self.damage,
+                            (self.y - 25) / 100,
+                            0,
+                            0,
+                           spritesheet.Sprite(game.cactusBulletAnim, 0, 4, 0),
+                        )
                     )
                     self.bulletCount += 1
                 if self.bulletCount == 6:
@@ -144,7 +152,7 @@ class CactusPlant(Plant):
         super().__init__(
             50, "shoot", game.tile, spritesheet.Sprite(game.cactusAnims, 0, 4, 0)
         )
-        self.damage = 5
+        self.damage = 9
         self.fireRate = 150  # lower means faster shooting
         self.shootTimer = self.fireRate - 45
         self.bulletArr = []
@@ -159,15 +167,27 @@ class CactusPlant(Plant):
                 shoot = True
 
         # change the animation
-        if self.shootTimer <= self.fireRate - 45 and shoot and self.currentAnim != "idle":
+        if (
+            self.shootTimer <= self.fireRate - 45
+            and shoot
+            and self.currentAnim != "idle"
+        ):
             self.currentAnim = "idle"
-            self.sprite = spritesheet.Sprite(game.cactusAnims, 0, 4, random.randint(0, 3))
-        elif self.currentAnim == "idle" and shoot and self.shootTimer == self.fireRate - 45:
+            self.sprite = spritesheet.Sprite(
+                game.cactusAnims, 0, 4, random.randint(0, 3)
+            )
+        elif (
+            self.currentAnim == "idle"
+            and shoot
+            and self.shootTimer == self.fireRate - 45
+        ):
             self.currentAnim = "shoot"
             self.sprite = spritesheet.Sprite(game.cactusAnims, 1, 5, 0)
         elif not shoot and self.currentAnim != "idle":
             self.currentAnim = "idle"
-            self.sprite = spritesheet.Sprite(game.cactusAnims, 0, 4, random.randint(0, 3))
+            self.sprite = spritesheet.Sprite(
+                game.cactusAnims, 0, 4, random.randint(0, 3)
+            )
 
         if shoot:
             # if the timer is less than what it should be dont fire, otherwise do
@@ -183,7 +203,7 @@ class CactusPlant(Plant):
                         (self.y - 25) / 100,
                         0,
                         0,
-                        spritesheet.Sprite(game.cornBulletAnim, 0, 4, 0),
+                        spritesheet.Sprite(game.cactusBulletAnim, 0, 4, 0),
                     )
                 )
                 self.shootTimer = 0

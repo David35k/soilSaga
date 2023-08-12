@@ -1,4 +1,4 @@
-import pygame, random, utilClasses, spritesheet
+import pygame, pygame.freetype, random, utilClasses, spritesheet
 
 pygame.init()
 
@@ -26,11 +26,21 @@ CANCEL_COLOR = (255, 0, 231)  # FF00E7
 
 currentCard = 0
 
+sus = utilClasses.TipWindow(
+    WIDTH / 2 - 150,
+    100,
+    300,
+    100,
+    "Tip: It is always a good idea to start off with some trees to generate you money. Drag the tree card onto the board to plant it",
+)
+
 # MONEY!!!
-MONEY = 1500
+MONEY = 75
 
 # Fonts
-moneyFont = pygame.font.SysFont(None, 50)
+pygame.freetype.init()
+moneyFont = pygame.freetype.Font("font/font.ttf", 50)
+
 
 tiles = utilClasses.Tiles(100, 100, 5, 10)
 tiles.createTiles()
@@ -58,112 +68,15 @@ bambooCard = utilClasses.Card(4.4, 200, True, "bamboo", bambooImage)
 cards = [moneyCard, cornCard, carrotCard, cactusCard, bambooCard, shovelCard]
 plants = []
 
+# make all the waves here
 wave1 = utilClasses.Wave(
     [
-        ["robotBasic", 60],
-        ["robotBasic", random.randint(1000, 5000)],
-        ["robotBasic", random.randint(1000, 5000)],
-        ["robotBasic", random.randint(1000, 5000)],
-        ["robotBasic", random.randint(1000, 5000)],
-        ["robotBasic", random.randint(1000, 5000)],
-        ["robotBasic", random.randint(1000, 5000)],
-        ["robotBasic", random.randint(1000, 5000)],
-        ["robotBasic", random.randint(1000, 5000)],
-        ["robotBasic", random.randint(1000, 5000)],
-        ["robotBasic", random.randint(1000, 5000)],
-        ["robotBasic", random.randint(1000, 5000)],
-        ["robotBasic", random.randint(1000, 5000)],
-        ["robotBasic", random.randint(1000, 5000)],
-        ["robotBasic", random.randint(1000, 5000)],
-        ["robotBasic", random.randint(1000, 5000)],
-        ["robotBasic", random.randint(1000, 5000)],
-        ["robotBasic", random.randint(1000, 5000)],
-        ["robotBasic", random.randint(1000, 5000)],
-        ["robotBasic", random.randint(1000, 5000)],
-        ["robotBasic", random.randint(1000, 5000)],
-        ["robotBasic", random.randint(1000, 5000)],
-        ["robotBasic", random.randint(1000, 5000)],
-        ["robotBasic", random.randint(1000, 5000)],
-        ["robotBasic", random.randint(1000, 5000)],
-        ["robotBasic", random.randint(1000, 5000)],
-        ["robotBasic", random.randint(1000, 5000)],
-        ["robotBasic", random.randint(1000, 5000)],
-        ["robotBasic", random.randint(1000, 5000)],
-        ["robotBasic", random.randint(1000, 5000)],
-        ["laneBot", random.randint(2000, 5000)],
-        ["laneBot", random.randint(2000, 5000)],
-        ["laneBot", random.randint(2000, 5000)],
-        ["laneBot", random.randint(2000, 5000)],
-        ["laneBot", random.randint(2000, 5000)],
-        ["laneBot", random.randint(2000, 5000)],
-        ["laneBot", random.randint(2000, 5000)],
-        ["laneBot", random.randint(2000, 5000)],
-        ["laneBot", random.randint(2000, 5000)],
-        ["laneBot", random.randint(2000, 5000)],
-        ["assaultBot", random.randint(3000, 5000)],
-        ["assaultBot", random.randint(3000, 5000)],
-        ["assaultBot", random.randint(3000, 5000)],
-        ["assaultBot", random.randint(3000, 5000)],
-        ["assaultBot", random.randint(3000, 5000)],
-        ["assaultBot", random.randint(3000, 5000)],
-        ["assaultBot", random.randint(3000, 5000)],
-        ["assaultBot", random.randint(3000, 5000)],
-        ["assaultBot", random.randint(3000, 5000)],
-        ["assaultBot", random.randint(3000, 5000)],
-        ["assaultBot", random.randint(3000, 5000)],
-        ["robotBasic", random.randint(1000, 5000)],
-        ["robotBasic", random.randint(1000, 5000)],
-        ["robotBasic", random.randint(1000, 5000)],
-        ["robotBasic", random.randint(1000, 5000)],
-        ["robotBasic", random.randint(1000, 5000)],
-        ["robotBasic", random.randint(1000, 5000)],
-        ["robotBasic", random.randint(1000, 5000)],
-        ["robotBasic", random.randint(1000, 5000)],
-        ["robotBasic", random.randint(1000, 5000)],
-        ["robotBasic", random.randint(1000, 5000)],
-        ["robotBasic", random.randint(1000, 5000)],
-        ["robotBasic", random.randint(1000, 5000)],
-        ["robotBasic", random.randint(1000, 5000)],
-        ["robotBasic", random.randint(1000, 5000)],
-        ["robotBasic", random.randint(1000, 5000)],
-        ["robotBasic", random.randint(1000, 5000)],
-        ["robotBasic", random.randint(1000, 5000)],
-        ["robotBasic", random.randint(1000, 5000)],
-        ["robotBasic", random.randint(1000, 5000)],
-        ["robotBasic", random.randint(1000, 5000)],
-        ["robotBasic", random.randint(1000, 5000)],
-        ["robotBasic", random.randint(1000, 5000)],
-        ["robotBasic", random.randint(1000, 5000)],
-        ["robotBasic", random.randint(1000, 5000)],
-        ["robotBasic", random.randint(1000, 5000)],
-        ["robotBasic", random.randint(1000, 5000)],
-        ["robotBasic", random.randint(1000, 5000)],
-        ["robotBasic", random.randint(1000, 5000)],
-        ["robotBasic", random.randint(1000, 5000)],
-        ["robotBasic", random.randint(1000, 5000)],
-        ["laneBot", random.randint(2000, 5000)],
-        ["laneBot", random.randint(2000, 5000)],
-        ["laneBot", random.randint(2000, 5000)],
-        ["laneBot", random.randint(2000, 5000)],
-        ["laneBot", random.randint(2000, 5000)],
-        ["laneBot", random.randint(2000, 5000)],
-        ["laneBot", random.randint(2000, 5000)],
-        ["laneBot", random.randint(2000, 5000)],
-        ["laneBot", random.randint(2000, 5000)],
-        ["laneBot", random.randint(2000, 5000)],
-        ["assaultBot", random.randint(3000, 5000)],
-        ["assaultBot", random.randint(3000, 5000)],
-        ["assaultBot", random.randint(3000, 5000)],
-        ["assaultBot", random.randint(3000, 5000)],
-        ["assaultBot", random.randint(3000, 5000)],
-        ["assaultBot", random.randint(3000, 5000)],
-        ["assaultBot", random.randint(3000, 5000)],
-        ["assaultBot", random.randint(3000, 5000)],
-        ["assaultBot", random.randint(3000, 5000)],
-        ["assaultBot", random.randint(3000, 5000)],
-        ["assaultBot", random.randint(3000, 5000)],
+        ["robotBasic", 60 * 20],
+        ["robotBasic", 60 * 35],
+        ["robotBasic", 60 * 55],
+        ["robotBasic", 60 * 55],
     ],
-    5000,
+    60 * 60,
 )
 # wave2 = utilClasses.Wave(
 #     [
@@ -222,6 +135,16 @@ cactusIdle = pygame.image.load("images/cactus/cactusIdle.png").convert_alpha()
 cactusIdleSheet = spritesheet.Spritesheet(cactusIdle)
 cactusShoot = pygame.image.load("images/cactus/cactusShoot.png").convert_alpha()
 cactusShootSheet = spritesheet.Spritesheet(cactusShoot)
+
+# bullet
+cactusBulletAnim = [[]]
+cactusBullet = pygame.image.load("images/cactus/bullet.png").convert_alpha()
+cactusBulletSheet = spritesheet.Spritesheet(cactusBullet)
+
+for i in range(4):
+    cactusBulletAnim[0].append(
+        cactusBulletSheet.get_image(i, 32, 32, IMPORT_SCALE, CANCEL_COLOR)
+    )
 
 for i in range(4):
     cactusAnims[0].append(
@@ -349,7 +272,8 @@ while carryOn:
             enemy.switch()
 
     # update text
-    moneyTextRect = moneyFont.render("$" + str(MONEY), True, (0, 0, 0))
+    # sussy =
+    moneySurf, moneyRect = moneyFont.render("$" + str(MONEY), BLACK)
 
     # clear screen
     pygame.draw.rect(screen, (50, 50, 50), [0, 0, WIDTH, HEIGHT])
@@ -377,13 +301,12 @@ while carryOn:
     for enemy in enemyArr:
         enemy.draw()
 
+    # render text
     screen.blit(
-        moneyTextRect,
-        (
-            WIDTH - moneyTextRect.get_width() - 10,
-            HEIGHT - moneyTextRect.get_height() - 10,
-        ),
+        moneySurf, (WIDTH - moneyRect.width - 10, HEIGHT - moneyRect.height - 10)
     )
+
+    # sus.draw()
 
     # update screen
     pygame.display.update()
