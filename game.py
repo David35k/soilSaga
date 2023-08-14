@@ -26,20 +26,21 @@ CANCEL_COLOR = (255, 0, 231)  # FF00E7
 
 currentCard = 0
 
-sus = utilClasses.TipWindow(
-    WIDTH / 2 - 150,
-    100,
-    300,
-    100,
-    "Tip: It is always a good idea to start off with some trees to generate you money. Drag the tree card onto the board to plant it",
-)
-
 # MONEY!!!
 MONEY = 75
 
 # Fonts
 pygame.freetype.init()
 moneyFont = pygame.freetype.Font("font/font.ttf", 50)
+tipFont = pygame.freetype.Font("font/font.ttf", 30)
+
+bruh = utilClasses.TipWindow(
+    WIDTH / 2 - 200,
+    100,
+    400,
+    100,
+    ["The farm needs your help!", "Defend the farm from", "the invading robots."],
+)
 
 
 tiles = utilClasses.Tiles(100, 100, 5, 10)
@@ -71,12 +72,9 @@ plants = []
 # make all the waves here
 wave1 = utilClasses.Wave(
     [
-        ["robotBasic", 60 * 20],
-        ["robotBasic", 60 * 35],
-        ["robotBasic", 60 * 55],
-        ["robotBasic", 60 * 55],
+        ["robotBasic", 60 * 30],
     ],
-    60 * 60,
+    60 * 30,
 )
 # wave2 = utilClasses.Wave(
 #     [
@@ -272,11 +270,12 @@ while carryOn:
             enemy.switch()
 
     # update text
-    # sussy =
     moneySurf, moneyRect = moneyFont.render("$" + str(MONEY), BLACK)
 
     # clear screen
     pygame.draw.rect(screen, (50, 50, 50), [0, 0, WIDTH, HEIGHT])
+
+    bruh.draw()
 
     # draw tiles
     # tiles.draw()

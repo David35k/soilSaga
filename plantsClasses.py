@@ -28,7 +28,7 @@ class MoneyTreePlant(Plant):
         super().__init__(
             30, "passive", game.tile, spritesheet.Sprite(game.moneyTreeAnims, 0, 4, 0)
         )
-        self.rate = 60 * 6
+        self.rate = 60 * 10
         self.timer = 0
         self.name = "tree"  # for debugging
 

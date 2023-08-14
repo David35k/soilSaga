@@ -50,17 +50,20 @@ class Tiles:
 
 
 class TipWindow:
-    def __init__(self, x, y, width, height, message):
+    def __init__(self, x, y, width, height, lines):
         self.x = x
         self.y = y
         self.width = width
         self.height = height
-        self.message = message
+        self.lines = lines
 
     def draw(self):
         pygame.draw.rect(
             game.screen, game.WHITE, [self.x, self.y, self.width, self.height]
         )
+        for i in range(len(self.lines)):
+            tipSurf, tipRect = game.tipFont.render(self.lines[i], game.BLACK)
+            game.screen.blit(tipSurf, (self.x + self.width/2 - tipRect.width/2, self.y + self.height/2 - tipRect.height*len(self.lines)/2 + tipRect.height * i))
 
 
 class Bullet:
