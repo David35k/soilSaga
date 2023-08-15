@@ -34,13 +34,33 @@ pygame.freetype.init()
 moneyFont = pygame.freetype.Font("font/font.ttf", 50)
 tipFont = pygame.freetype.Font("font/font.ttf", 30)
 
-bruh = utilClasses.TipWindow(
+tip1 = utilClasses.TipWindow(
     WIDTH / 2 - 200,
     100,
     400,
     100,
     ["The farm needs your help!", "Defend the farm from", "the invading robots."],
 )
+
+tip2 = utilClasses.TipWindow(
+    WIDTH / 2 - 300,
+    100,
+    600,
+    150,
+    ["You need money to place plants.", "Money grows on trees (obviously).", "Plant a tree to start earning money!", "Tip: Place trees at the back since they", "need to be protected."],
+)
+
+tip3 = utilClasses.TipWindow(
+    WIDTH / 2 - 300,
+    100,
+    600,
+    150,
+    ["You need money to place plants.", "Money grows on trees (obviously).", "Plant a tree to start earning money!", "Tip: Place trees at the back since they", "need to be protected."],
+)
+
+tipIndex = 0
+tipArr = [tip1, tip2]
+tipShowing = True
 
 
 tiles = utilClasses.Tiles(100, 100, 5, 10)
@@ -72,7 +92,7 @@ plants = []
 # make all the waves here
 wave1 = utilClasses.Wave(
     [
-        ["robotBasic", 60 * 30],
+        ["robotBasic", 100],
     ],
     60 * 30,
 )
@@ -178,9 +198,16 @@ while carryOn:
                     and pygame.mouse.get_pos()[1] >= card.posy
                     and pygame.mouse.get_pos()[1] <= card.posy + card.height
                     and card.canPick
+                    and not tipShowing
                 ):
                     currentCard = card
                     card.picked = True
+
+        if event.type == pygame.KEYDOWN:
+            pressed = pygame.key.get_pressed()
+
+            if pressed[pygame.K_SPACE]:
+                tipIndex += 1
 
         if event.type == pygame.MOUSEBUTTONUP:
             # put the selected card back
@@ -227,7 +254,8 @@ while carryOn:
 
     # create enemies
     wave1.spawnEnemies()
-    wave1.length -= 1
+    if not tipShowing:
+        wave1.length -= 1
     # if wave2.length <= 0:
     #     wave2.spawnEnemies()
 
@@ -275,7 +303,10 @@ while carryOn:
     # clear screen
     pygame.draw.rect(screen, (50, 50, 50), [0, 0, WIDTH, HEIGHT])
 
-    bruh.draw()
+    if tipIndex > len(tipArr) - 1:
+        tipShowing = False
+    else:
+        tipArr[tipIndex].draw()
 
     # draw tiles
     # tiles.draw()
