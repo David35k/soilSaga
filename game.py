@@ -47,7 +47,13 @@ tip2 = utilClasses.TipWindow(
     100,
     600,
     150,
-    ["You need money to place plants.", "Money grows on trees (obviously).", "Plant a tree to start earning money!", "Tip: Place trees at the back since they", "need to be protected."],
+    [
+        "You need money to place plants.",
+        "Money grows on trees (obviously).",
+        "Plant a tree to start earning money!",
+        "Tip: Place trees at the back since they",
+        "need to be protected.",
+    ],
 )
 
 tip3 = utilClasses.TipWindow(
@@ -55,11 +61,30 @@ tip3 = utilClasses.TipWindow(
     100,
     600,
     150,
-    ["You need money to place plants.", "Money grows on trees (obviously).", "Plant a tree to start earning money!", "Tip: Place trees at the back since they", "need to be protected."],
+    [
+        "You need money to place plants.",
+        "Money grows on trees (obviously).",
+        "Plant a tree to start earning money!",
+        "Tip: Place trees at the back since they",
+        "need to be protected.",
+    ],
+)
+
+tip4 = utilClasses.TipWindow(
+    WIDTH / 2 - 350,
+    100,
+    700,
+    150,
+    [
+        "Use the money you earn to place",
+        "more plants. Watch out though, robots",
+        "will be arriving soon. Place the corn plant",
+        "in line with the enemy robot when it arrives.",
+    ],
 )
 
 tipIndex = 0
-tipArr = [tip1, tip2]
+tipArr = [tip1, tip2, tip3, tip4]
 tipShowing = True
 
 
@@ -92,7 +117,7 @@ plants = []
 # make all the waves here
 wave1 = utilClasses.Wave(
     [
-        ["robotBasic", 100],
+        ["robotBasic", 45 * 60],
     ],
     60 * 30,
 )
