@@ -47,7 +47,7 @@ class CornPlant(Plant):
         super().__init__(
             60, "shoot", game.tile, spritesheet.Sprite(game.cornAnims, 0, 4, 0)
         )
-        self.damage = 7
+        self.damage = 5.5
         self.fireRate = 60  # lower means faster shooting
         self.shootTimer = (
             self.fireRate - 15
@@ -106,7 +106,7 @@ class CarrotPlant(Plant):
         super().__init__(
             65, "shoot", game.tile, spritesheet.Sprite(game.carrotAnims, 0, 4, 0)
         )
-        self.damage = 12
+        self.damage = 10
         self.fireRate = 200  # lower means faster shooting
         self.shootTimer = 0
         self.bulletArr = []
