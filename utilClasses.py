@@ -50,20 +50,35 @@ class Tiles:
 
 
 class TipWindow:
-    def __init__(self, x, y, width, height, lines):
+    def __init__(self, x, y, width, height, lines, time):
         self.x = x
         self.y = y
         self.width = width
         self.height = height
         self.lines = lines
+        self.time = time
+        self.drawTimer = 0
+        self.showing = False
 
     def draw(self):
-        pygame.draw.rect(
-            game.screen, game.WHITE, [self.x, self.y, self.width, self.height]
-        )
-        for i in range(len(self.lines)):
-            tipSurf, tipRect = game.tipFont.render(self.lines[i], game.BLACK)
-            game.screen.blit(tipSurf, (self.x + self.width/2 - tipRect.width/2, self.y + self.height/2 - tipRect.height*len(self.lines)/2 + tipRect.height * i))
+        self.drawTimer += 1
+        if self.drawTimer == self.time:
+            self.showing = True
+            pygame.draw.rect(
+                game.screen, game.WHITE, [self.x, self.y, self.width, self.height]
+            )
+            for i in range(len(self.lines)):
+                tipSurf, tipRect = game.tipFont.render(self.lines[i], game.BLACK)
+                game.screen.blit(
+                    tipSurf,
+                    (
+                        self.x + self.width / 2 - tipRect.width / 2,
+                        self.y
+                        + self.height / 2
+                        - tipRect.height * len(self.lines) / 2
+                        + tipRect.height * i,
+                    ),
+                )
 
 
 class Bullet:
@@ -114,7 +129,12 @@ class Wave:
         for enemy in self.enemies:
             # check if it is time to spawn
             if enemy[1] <= 0:
-                if enemy[0] == "robotBasic":
+                if enemy[0] == "robotBasicSlow":
+                    game.enemyArr.append(
+                        enemiesClasses.RobotBasicSlow(random.randint(0, 4))
+                    )
+                    self.enemies.remove(enemy)
+                elif enemy[0] == "robotBasic":
                     game.enemyArr.append(
                         enemiesClasses.RobotBasic(random.randint(0, 4))
                     )

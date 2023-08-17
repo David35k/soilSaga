@@ -39,7 +39,13 @@ tip1 = utilClasses.TipWindow(
     100,
     400,
     100,
-    ["The farm needs your help!", "Defend the farm from", "the invading robots."],
+    [
+        "The farm needs your help!",
+        "Defend the farm from",
+        "the invading robots.",
+        "(press space)",
+    ],
+    60,
 )
 
 tip2 = utilClasses.TipWindow(
@@ -54,6 +60,7 @@ tip2 = utilClasses.TipWindow(
         "Tip: Place trees at the back since they",
         "need to be protected.",
     ],
+    60 * 30,
 )
 
 tip3 = utilClasses.TipWindow(
@@ -62,12 +69,12 @@ tip3 = utilClasses.TipWindow(
     600,
     150,
     [
-        "You need money to place plants.",
-        "Money grows on trees (obviously).",
-        "Plant a tree to start earning money!",
-        "Tip: Place trees at the back since they",
-        "need to be protected.",
+        "Quick, a robot is here!",
+        "Place the corn plant in line with the",
+        "robot. It will shoot automatically.",
+        "Tip: Don't let the robots enter the farm!",
     ],
+    45 * 60,
 )
 
 tip4 = utilClasses.TipWindow(
@@ -81,11 +88,12 @@ tip4 = utilClasses.TipWindow(
         "will be arriving soon. Place the corn plant",
         "in line with the enemy robot when it arrives.",
     ],
+    6969696969,
 )
 
 tipIndex = 0
 tipArr = [tip1, tip2, tip3, tip4]
-tipShowing = True
+tipShowing = False
 
 
 tiles = utilClasses.Tiles(100, 100, 5, 10)
@@ -114,18 +122,32 @@ bambooCard = utilClasses.Card(4.4, 200, True, "bamboo", bambooImage)
 cards = [moneyCard, cornCard, carrotCard, cactusCard, bambooCard, shovelCard]
 plants = []
 
-# make all the waves here
+# make all the waves here (can't spawn enemies on last frame of wave)
 wave1 = utilClasses.Wave(
     [
-        ["robotBasic", 45 * 60],
+        ["robotBasicSlow", 20 * 60],
     ],
-    60 * 30,
+    30 * 60 + 1,
 )
-# wave2 = utilClasses.Wave(
-#     [
-#         ["zombieBasic"]
-#     ]
-# )
+wave2 = utilClasses.Wave(
+    [
+        ["robotBasicSlow", 30 * 60],
+        ["robotBasicSlow", 30 * 60],
+        ["robotBasicSlow", 30 * 60],
+    ],
+    30 * 60 + 1,
+)
+wave3 = utilClasses.Wave(
+    [
+        ["robotBasicSlow", 30 * 60],
+        ["robotBasicSlow", 40 * 60],
+        ["robotBasicSlow", 50 * 60],
+        ["robotBasic", 50 * 60],
+        ["robotBasicSlow", 60 * 60],
+    ],
+    60 * 60 + 1,
+)
+
 
 enemyArr = []
 
@@ -278,11 +300,15 @@ while carryOn:
             currentCard.posy = pygame.mouse.get_pos()[1] - 0.5 * currentCard.height
 
     # create enemies
-    wave1.spawnEnemies()
-    if not tipShowing:
+    if wave1.length > 0:
+        wave1.spawnEnemies()
         wave1.length -= 1
-    # if wave2.length <= 0:
-    #     wave2.spawnEnemies()
+    elif wave1.length <= 0 and wave2.length > 0:
+        wave2.spawnEnemies()
+        wave2.length -= 1
+    elif wave2.length <= 0 and wave3.length > 0:
+        wave3.spawnEnemies()
+        wave3.length -= 1
 
     # plants attack
     for plant in plants:
@@ -328,10 +354,14 @@ while carryOn:
     # clear screen
     pygame.draw.rect(screen, (50, 50, 50), [0, 0, WIDTH, HEIGHT])
 
-    if tipIndex > len(tipArr) - 1:
-        tipShowing = False
-    else:
-        tipArr[tipIndex].draw()
+    # for tip in tipArr:
+    #     tip.draw()
+    #     if tip.showing:
+    #         tipShowing = True
+
+    # print(tipArr.index(tip))
+    # if tipArr[tipArr.index(tip) + 1].showing:
+    #     tipArr.remove(tip)
 
     # draw tiles
     # tiles.draw()

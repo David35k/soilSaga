@@ -47,6 +47,12 @@ class Enemy:
         pygame.draw.rect(game.screen, game.GREEN, [self.x, self.y, 50, 50])
 
 
+class RobotBasicSlow(Enemy):
+    def __init__(self, row):
+        super().__init__(row, 0.6, 10, 50, False)
+        self.name = "basic"
+
+
 class RobotBasic(Enemy):
     def __init__(self, row):
         super().__init__(row, 1, 15, 50, False)
