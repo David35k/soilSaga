@@ -50,19 +50,20 @@ class Tiles:
 
 
 class TipWindow:
-    def __init__(self, x, y, width, height, lines, time):
+    def __init__(self, x, y, width, height, lines, startTime, stopTime):
         self.x = x
         self.y = y
         self.width = width
         self.height = height
         self.lines = lines
-        self.time = time
+        self.startTime = startTime
+        self.stopTime = stopTime
         self.drawTimer = 0
         self.showing = False
 
     def draw(self):
         self.drawTimer += 1
-        if self.drawTimer == self.time:
+        if self.drawTimer > self.startTime and self.drawTimer < self.stopTime:
             self.showing = True
             pygame.draw.rect(
                 game.screen, game.WHITE, [self.x, self.y, self.width, self.height]
