@@ -48,6 +48,7 @@ tip1 = utilClasses.TipWindow(
     60 * 4,
 )
 
+
 tip2 = utilClasses.TipWindow(
     WIDTH / 2 - 300,
     100,
@@ -73,10 +74,10 @@ tip3 = utilClasses.TipWindow(
         "Quick, a robot is here!",
         "Place the corn plant in line with the",
         "robot. It will shoot automatically.",
-        "Tip: Don't let the robots enter the farm!",
+        "Don't let the robots enter the farm!",
     ],
     25 * 60,
-    29 * 60,
+    32 * 60,
 )
 
 tip4 = utilClasses.TipWindow(

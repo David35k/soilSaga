@@ -5,42 +5,74 @@ wave1 = utilClasses.Wave(
     [
         ["robotBasicSlow", 25 * 60],
     ],
-    25 * 60 + 1,
+    30 * 60 + 1,
 )
 wave2 = utilClasses.Wave(
     [
-        ["robotBasicSlow", 25 * 60],
-        ["robotBasicSlow", 30 * 60],
         ["robotBasicSlow", 35 * 60],
+        ["robotBasicSlow", 40 * 60],
         ["robotBasic", 45 * 60],
     ],
     45 * 60 + 1,
 )
 wave3 = utilClasses.Wave(
     [
+        ["robotBasicSlow", 5 * 60],
+        ["robotBasicSlow", 10 * 60],
+        ["robotBasicSlow", 15 * 60],
+        ["robotBasic", 20 * 60],
+        ["robotBasicSlow", 25 * 60],
         ["robotBasicSlow", 30 * 60],
-        ["robotBasicSlow", 40 * 60],
-        ["robotBasicSlow", 50 * 60],
-        ["robotBasic", 50 * 60],
-        ["robotBasicSlow", 60 * 60],
     ],
-    60 * 60 + 1,
+    30 * 60 + 1,
 )
 wave4 = utilClasses.Wave(
     [
+        ["robotBasic", 10 * 60],
         ["robotBasic", 15 * 60],
-        ["robotBasic", 15 * 60],
-        ["robotBasicSlow", 50 * 60],
-        ["robotBasic", 50 * 60],
-        ["robotBasicSlow", 60 * 60],
+        ["robotBasic", 17 * 60],
+        ["robotBasicSlow", 25 * 60],
+        ["robotBasicSlow", 27 * 60],
+        ["robotBasic", 28 * 60],
+        ["robotBasicSlow", 29 * 60],
+        ["robotBasic", 30 * 60],
+        ["robotBasicSlow", 30 * 60],
     ],
-    60 * 60 + 1,
+    30 * 60 + 1,
 )
 wave5 = utilClasses.Wave(
     [
         ["tractorBot", 15 * 60],
+        ["robotBasic", 16 * 60],
+        ["robotBasic", 17 * 60],
+        ["tractorBot", 20 * 60],
+        ["robotBasic", 11 * 60],
+        ["robotBasic", 14 * 60],
+        ["assaultBot", 25 * 60],
+        ["robotBasic", 30 * 60],
+        ["tractorBot", 40 * 60],
+        ["tractorBot", 45 * 60],
+        ["assaultBot", 42 * 60],
+        ["assaultBot", 47 * 60],
     ],
-    60 * 100 + 1,
+    50 * 60 + 1,
+)
+wave6 = utilClasses.Wave(
+    [
+        ["tractorBot", 15 * 60],
+        ["robotBasic", 16 * 60],
+        ["robotBasic", 17 * 60],
+        ["tractorBot", 20 * 60],
+        ["robotBasic", 11 * 60],
+        ["robotBasic", 14 * 60],
+        ["assaultBot", 25 * 60],
+        ["robotBasic", 30 * 60],
+        ["tractorBot", 40 * 60],
+        ["tractorBot", 45 * 60],
+        ["assaultBot", 42 * 60],
+        ["assaultBot", 47 * 60],
+    ],
+    50 * 60 + 1,
 )
 wave9 = utilClasses.Wave(
     [
