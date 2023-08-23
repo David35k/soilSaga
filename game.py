@@ -293,6 +293,9 @@ while carryOn:
     elif waves.wave4.length <= 0 and waves.wave5.length > 0:
         waves.wave5.spawnEnemies()
         waves.wave5.length -= 1
+    elif waves.wave5.length <= 0 and waves.wave6.length > 0:
+        waves.wave6.spawnEnemies()
+        waves.wave6.length -= 1
 
     # plants attack
     for plant in plants:

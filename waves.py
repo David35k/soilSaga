@@ -24,7 +24,7 @@ wave3 = utilClasses.Wave(
         ["robotBasicSlow", 25 * 60],
         ["robotBasicSlow", 30 * 60],
     ],
-    30 * 60 + 1,
+    35 * 60 + 1,
 )
 wave4 = utilClasses.Wave(
     [
@@ -38,7 +38,7 @@ wave4 = utilClasses.Wave(
         ["robotBasic", 30 * 60],
         ["robotBasicSlow", 30 * 60],
     ],
-    30 * 60 + 1,
+    35 * 60 + 1,
 )
 wave5 = utilClasses.Wave(
     [
@@ -55,7 +55,7 @@ wave5 = utilClasses.Wave(
         ["assaultBot", 42 * 60],
         ["assaultBot", 47 * 60],
     ],
-    50 * 60 + 1,
+    55 * 60 + 1,
 )
 wave6 = utilClasses.Wave(
     [
@@ -72,7 +72,30 @@ wave6 = utilClasses.Wave(
         ["assaultBot", 42 * 60],
         ["assaultBot", 47 * 60],
     ],
-    50 * 60 + 1,
+    55 * 60 + 1,
+)
+wave7 = utilClasses.Wave(
+    [
+        ["laneBot", 5],
+        ["laneBot", 10],
+        ["laneBot", 11],
+        ["laneBot", 12],
+        ["laneBot", 13],
+        ["laneBot", 14],
+        ["laneBot", 15],
+        ["assaultBot", 20],
+        ["tractorBot", 21],
+        ["assaultBot", 22],
+        ["tractorBot", 23],
+        ["assaultBot", 24],
+        ["tractorBot", 25],
+        ["assaultBot", 30],
+        ["tractorBot", 31],
+        ["assaultBot", 32],
+        ["tractorBot", 33],
+        ["assaultBot", 34],
+    ],
+    45 * 60 + 1,
 )
 wave9 = utilClasses.Wave(
     [
@@ -186,58 +209,8 @@ wave9 = utilClasses.Wave(
         ["tractorBot", random.randint(60 * 10, 60 * 120)],
         ["teleportBot", random.randint(60 * 10, 60 * 120)],
         ["laneBot", random.randint(60 * 10, 60 * 120)],
-        ["robotBasic", random.randint(60 * 10, 60 * 120)],
-        ["assaultBot", random.randint(60 * 10, 60 * 120)],
-        ["tractorBot", random.randint(60 * 10, 60 * 120)],
-        ["teleportBot", random.randint(60 * 10, 60 * 120)],
-        ["laneBot", random.randint(60 * 10, 60 * 120)],
-        ["robotBasic", random.randint(60 * 10, 60 * 120)],
-        ["assaultBot", random.randint(60 * 10, 60 * 120)],
-        ["tractorBot", random.randint(60 * 10, 60 * 120)],
-        ["teleportBot", random.randint(60 * 10, 60 * 120)],
-        ["laneBot", random.randint(60 * 10, 60 * 120)],
-        ["robotBasic", random.randint(60 * 10, 60 * 120)],
-        ["assaultBot", random.randint(60 * 10, 60 * 120)],
-        ["tractorBot", random.randint(60 * 10, 60 * 120)],
-        ["teleportBot", random.randint(60 * 10, 60 * 120)],
-        ["laneBot", random.randint(60 * 10, 60 * 120)],
-        ["robotBasic", random.randint(60 * 10, 60 * 120)],
-        ["assaultBot", random.randint(60 * 10, 60 * 120)],
-        ["tractorBot", random.randint(60 * 10, 60 * 120)],
-        ["teleportBot", random.randint(60 * 10, 60 * 120)],
-        ["laneBot", random.randint(60 * 10, 60 * 120)],
-        ["robotBasic", random.randint(60 * 10, 60 * 120)],
-        ["assaultBot", random.randint(60 * 10, 60 * 120)],
-        ["tractorBot", random.randint(60 * 10, 60 * 120)],
-        ["teleportBot", random.randint(60 * 10, 60 * 120)],
-        ["laneBot", random.randint(60 * 10, 60 * 120)],
-        ["robotBasic", random.randint(60 * 10, 60 * 120)],
-        ["assaultBot", random.randint(60 * 10, 60 * 120)],
-        ["tractorBot", random.randint(60 * 10, 60 * 120)],
-        ["teleportBot", random.randint(60 * 10, 60 * 120)],
-        ["laneBot", random.randint(60 * 10, 60 * 120)],
-        ["robotBasic", random.randint(60 * 10, 60 * 120)],
-        ["assaultBot", random.randint(60 * 10, 60 * 120)],
-        ["tractorBot", random.randint(60 * 10, 60 * 120)],
-        ["teleportBot", random.randint(60 * 10, 60 * 120)],
-        ["laneBot", random.randint(60 * 10, 60 * 120)],
-        ["robotBasic", random.randint(60 * 10, 60 * 120)],
-        ["assaultBot", random.randint(60 * 10, 60 * 120)],
-        ["tractorBot", random.randint(60 * 10, 60 * 120)],
-        ["teleportBot", random.randint(60 * 10, 60 * 120)],
-        ["laneBot", random.randint(60 * 10, 60 * 120)],
-        ["robotBasic", random.randint(60 * 10, 60 * 120)],
-        ["assaultBot", random.randint(60 * 10, 60 * 120)],
-        ["tractorBot", random.randint(60 * 10, 60 * 120)],
-        ["teleportBot", random.randint(60 * 10, 60 * 120)],
-        ["laneBot", random.randint(60 * 10, 60 * 120)],
-        ["robotBasic", random.randint(60 * 10, 60 * 120)],
-        ["assaultBot", random.randint(60 * 10, 60 * 120)],
-        ["tractorBot", random.randint(60 * 10, 60 * 120)],
-        ["teleportBot", random.randint(60 * 10, 60 * 120)],
-        ["laneBot", random.randint(60 * 10, 60 * 120)],
     ],
-    60 * 120 + 1,
+    130 * 60 + 1,
 )
 
 wave10 = utilClasses.Wave(
@@ -422,6 +395,7 @@ wave10 = utilClasses.Wave(
         ["tractorBot", random.randint(60 * 1, 60 * 10)],
         ["teleportBot", random.randint(60 * 1, 60 * 10)],
         ["laneBot", random.randint(60 * 1, 60 * 10)],
+        ["robotBasicSlow", 15 * 60]
     ],
-    60 * 10 + 1,
+    15 * 60 + 1,
 )
