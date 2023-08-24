@@ -34,11 +34,15 @@ pygame.freetype.init()
 moneyFont = pygame.freetype.Font("font/font.ttf", 50)
 tipFont = pygame.freetype.Font("font/font.ttf", 30)
 
+timerFont = pygame.freetype.Font("font/font.ttf", 25)
+WAVE_TIME = 0
+WAVE_NUM = 0
+
 tip1 = utilClasses.TipWindow(
-    WIDTH / 2 - 200,
-    100,
-    400,
-    100,
+    WIDTH / 2 - 250,
+    50,
+    500,
+    150,
     [
         "The farm needs your help!",
         "Defend the farm from",
@@ -51,28 +55,27 @@ tip1 = utilClasses.TipWindow(
 
 tip2 = utilClasses.TipWindow(
     WIDTH / 2 - 300,
-    100,
+    50,
     600,
-    150,
+    200,
     [
         "You need money to place plants.",
         "Money grows on trees (obviously).",
         "Plant a tree to start earning money!",
-        "Tip: Place trees at the back since they",
-        "need to be protected.",
+        "Protip: lots of trees = lots of money",
     ],
     60 * 4,
-    10 * 60,
+    12 * 60,
 )
 
 tip3 = utilClasses.TipWindow(
     WIDTH / 2 - 300,
-    100,
+    50,
     600,
-    150,
+    200,
     [
-        "Quick, a robot is here!",
-        "Place the corn plant in line with the",
+        "The first robot is here!",
+        "Place a corn plant in line with the",
         "robot. It will shoot automatically.",
         "Don't let the robots enter the farm!",
     ],
@@ -81,22 +84,58 @@ tip3 = utilClasses.TipWindow(
 )
 
 tip4 = utilClasses.TipWindow(
-    WIDTH / 2 - 350,
+    WIDTH / 2 - 325,
+    50,
+    650,
     100,
+    [
+        "You can use the shovel to remove plants.",
+        "No refunds!!!",
+    ],
+    16 * 60,
+    19 * 60,
+)
+
+tip5 = utilClasses.TipWindow(
+    WIDTH / 2 - 250,
+    50,
+    500,
+    150,
+    [
+        "That's it from me.",
+        "Good luck!",
+    ],
+    32 * 60,
+    34 * 60,
+)
+
+tip6 = utilClasses.TipWindow(
+    WIDTH / 2 - 250,
+    50,
+    500,
+    150,
+    [
+        "You're gonna need it",
+        ">:)"
+    ],
+    34 * 60,
+    35 * 60,
+)
+
+tip7 = utilClasses.TipWindow(
+    WIDTH / 2 - 350,
+    50,
     700,
     150,
     [
-        "Use the money you earn to place",
-        "more plants. Watch out though, robots",
-        "will be arriving soon. Place the corn plant",
-        "in line with the enemy robot when it arrives.",
+        "To place a card drag it onto the board.",
     ],
-    6969696969,
-    6969,
+    12 * 60,
+    16 * 60,
 )
 
 tipIndex = 0
-tipArr = [tip1, tip2, tip3, tip4]
+tipArr = [tip1, tip2, tip3, tip4, tip5, tip6, tip7]
 tipShowing = False
 
 
@@ -277,28 +316,57 @@ while carryOn:
             currentCard.posx = pygame.mouse.get_pos()[0] - 0.5 * currentCard.width
             currentCard.posy = pygame.mouse.get_pos()[1] - 0.5 * currentCard.height
 
-    # create enemies
+    # change waves (very bad code) and spawn enemies
     if waves.wave1.length > 0:
         waves.wave1.spawnEnemies()
         waves.wave1.length -= 1
+        WAVE_NUM = 1
+        WAVE_TIME = waves.wave1.length / 60
     elif waves.wave1.length <= 0 and waves.wave2.length > 0:
         waves.wave2.spawnEnemies()
         waves.wave2.length -= 1
+        WAVE_NUM = 2
+        WAVE_TIME = waves.wave2.length / 60
     elif waves.wave2.length <= 0 and waves.wave3.length > 0:
         waves.wave3.spawnEnemies()
         waves.wave3.length -= 1
+        WAVE_NUM = 3
+        WAVE_TIME = waves.wave3.length / 60
     elif waves.wave3.length <= 0 and waves.wave4.length > 0:
         waves.wave4.spawnEnemies()
         waves.wave4.length -= 1
+        WAVE_NUM = 4
+        WAVE_TIME = waves.wave4.length / 60
     elif waves.wave4.length <= 0 and waves.wave5.length > 0:
         waves.wave5.spawnEnemies()
         waves.wave5.length -= 1
+        WAVE_NUM = 5
+        WAVE_TIME = waves.wave5.length / 60
     elif waves.wave5.length <= 0 and waves.wave6.length > 0:
         waves.wave6.spawnEnemies()
         waves.wave6.length -= 1
+        WAVE_NUM = 6
+        WAVE_TIME = waves.wave6.length / 60
     elif waves.wave6.length <= 0 and waves.wave7.length > 0:
         waves.wave7.spawnEnemies()
         waves.wave7.length -= 1
+        WAVE_NUM = 7
+        WAVE_TIME = waves.wave7.length / 60
+    elif waves.wave7.length <= 0 and waves.wave8.length > 0:
+        waves.wave8.spawnEnemies()
+        waves.wave8.length -= 1
+        WAVE_NUM = 8
+        WAVE_TIME = waves.wave8.length / 60
+    elif waves.wave8.length <= 0 and waves.wave9.length > 0:
+        waves.wave9.spawnEnemies()
+        waves.wave9.length -= 1
+        WAVE_NUM = 9
+        WAVE_TIME = waves.wave9.length / 60
+    elif waves.wave9.length <= 0 and waves.wave10.length > 0:
+        waves.wave10.spawnEnemies()
+        waves.wave10.length -= 1
+        WAVE_NUM = 10
+        WAVE_TIME = waves.wave10.length / 60
 
     # plants attack
     for plant in plants:
@@ -340,6 +408,7 @@ while carryOn:
 
     # update text
     moneySurf, moneyRect = moneyFont.render("$" + str(MONEY), BLACK)
+    timerSurf, timerRect = timerFont.render("Wave " + str(WAVE_NUM) + ", Next wave: " + str(round(WAVE_TIME)), WHITE)
 
     # clear screen
     pygame.draw.rect(screen, (50, 50, 50), [0, 0, WIDTH, HEIGHT])
@@ -375,6 +444,9 @@ while carryOn:
     # render text
     screen.blit(
         moneySurf, (WIDTH - moneyRect.width - 10, HEIGHT - moneyRect.height - 10)
+    )
+    screen.blit(
+        timerSurf, (WIDTH / 2 - timerRect.width / 2, 5)
     )
 
     # sus.draw()
