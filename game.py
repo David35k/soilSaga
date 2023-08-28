@@ -39,10 +39,10 @@ WAVE_TIME = 0
 WAVE_NUM = 0
 
 tip1 = utilClasses.TipWindow(
-    WIDTH / 2 - 250,
+    WIDTH / 2 - 225,
     50,
-    500,
-    150,
+    450,
+    125,
     [
         "The farm needs your help!",
         "Defend the farm from",
@@ -57,7 +57,7 @@ tip2 = utilClasses.TipWindow(
     WIDTH / 2 - 300,
     50,
     600,
-    200,
+    150,
     [
         "You need money to place plants.",
         "Money grows on trees (obviously).",
@@ -65,7 +65,7 @@ tip2 = utilClasses.TipWindow(
         "Protip: lots of trees = lots of money",
     ],
     60 * 4,
-    12 * 60,
+    9 * 60,
 )
 
 tip3 = utilClasses.TipWindow(
@@ -74,13 +74,13 @@ tip3 = utilClasses.TipWindow(
     600,
     200,
     [
-        "The first robot is here!",
+        "Here they come!",
         "Place a corn plant in line with the",
         "robot. It will shoot automatically.",
         "Don't let the robots enter the farm!",
     ],
-    25 * 60,
-    32 * 60,
+    30 * 60,
+    34 * 60,
 )
 
 tip4 = utilClasses.TipWindow(
@@ -92,46 +92,46 @@ tip4 = utilClasses.TipWindow(
         "You can use the shovel to remove plants.",
         "No refunds!!!",
     ],
+    13 * 60,
     16 * 60,
-    19 * 60,
 )
 
 tip5 = utilClasses.TipWindow(
-    WIDTH / 2 - 250,
+    WIDTH / 2 - 225,
     50,
-    500,
-    150,
+    450,
+    100,
     [
         "That's it from me.",
         "Good luck!",
     ],
-    32 * 60,
     34 * 60,
+    36 * 60,
 )
 
 tip6 = utilClasses.TipWindow(
-    WIDTH / 2 - 250,
+    WIDTH / 2 - 225,
     50,
-    500,
-    150,
+    450,
+    100,
     [
         "You're gonna need it",
         ">:)"
     ],
-    34 * 60,
-    35 * 60,
+    36 * 60,
+    37 * 60,
 )
 
 tip7 = utilClasses.TipWindow(
-    WIDTH / 2 - 350,
+    WIDTH / 2 - 300,
     50,
-    700,
-    150,
+    600,
+    50,
     [
         "To place a card drag it onto the board.",
     ],
-    12 * 60,
-    16 * 60,
+    9 * 60,
+    13 * 60,
 )
 
 tipIndex = 0
@@ -320,7 +320,7 @@ while carryOn:
     if waves.wave1.length > 0:
         waves.wave1.spawnEnemies()
         waves.wave1.length -= 1
-        WAVE_NUM = 1
+        WAVE_NUM = "Preperation"
         WAVE_TIME = waves.wave1.length / 60
     elif waves.wave1.length <= 0 and waves.wave2.length > 0:
         waves.wave2.spawnEnemies()
