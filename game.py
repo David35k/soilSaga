@@ -10,7 +10,8 @@ pygame.display.set_caption("Soil Saga")
 
 clock = pygame.time.Clock()
 
-carryOn = True
+carryOn = not True
+postgame = not False
 
 # Colors
 COLOR1 = (125, 125, 125)
@@ -114,10 +115,7 @@ tip6 = utilClasses.TipWindow(
     50,
     450,
     100,
-    [
-        "You're gonna need it",
-        ">:)"
-    ],
+    ["You're gonna need it", ">:)"],
     36 * 60,
     37 * 60,
 )
@@ -151,7 +149,7 @@ cornImage = pygame.transform.scale(cornImage, (96, 96))
 cornCard = utilClasses.Card(1.1, 100, True, "corn", cornImage)
 carrotImage = pygame.image.load("images/cards/carrot.png")
 carrotImage = pygame.transform.scale(carrotImage, (96, 96))
-carrotCard = utilClasses.Card(3.3, 600, True, "carrot", carrotImage)
+carrotCard = utilClasses.Card(3.3, 500, True, "carrot", carrotImage)
 cactusImage = pygame.image.load("images/cards/cactus.png")
 cactusImage = pygame.transform.scale(cactusImage, (96, 96))
 cactusCard = utilClasses.Card(2.2, 300, True, "cactus", cactusImage)
@@ -169,6 +167,16 @@ plants = []
 enemyArr = []
 
 IMPORT_SCALE = 3  # for images
+
+# ---------- tile sprites ----------
+tileSpritesArr = []
+spritesImage = pygame.image.load("images/grass.png").convert_alpha()
+tileSpriteSpritesheet = spritesheet.Spritesheet(spritesImage)
+
+for i in range(32):
+    tileSpritesArr.append(
+        tileSpriteSpritesheet.get_image(i, 32, 32, 3.12, CANCEL_COLOR)
+    )
 
 # ---------- corn animations ----------
 cornAnims = [[], []]
@@ -246,12 +254,40 @@ for i in range(4):
         bambooIdleSheet.get_image(i, 32, 32, IMPORT_SCALE, CANCEL_COLOR)
     )
 
+for tile in tiles.tileArr:
+    tile[4] = tileSpritesArr[random.randint(1, 31)]
+
+
+# ---------- all robots animations ----------
+robotAnims = [[], [], [], [], []]
+
+robotBasic = pygame.image.load("images/robots/robotBasic.png").convert_alpha()
+robotBasicSpritesheet = spritesheet.Spritesheet(robotBasic)
+
+assaultBot = pygame.image.load("images/robots/assaultBot.png").convert_alpha()
+assaultBotSpritesheet = spritesheet.Spritesheet(assaultBot)
+
+tractorBot = pygame.image.load("images/robots/tractorBot.png").convert_alpha()
+tractorBotSpritesheet = spritesheet.Spritesheet(tractorBot)
+
+teleportBot = pygame.image.load("images/robots/teleportBot.png").convert_alpha()
+teleportBotSpritesheet = spritesheet.Spritesheet(teleportBot)
+
+laneBot = pygame.image.load("images/robots/laneBot.png").convert_alpha()
+laneBotSpritesheet = spritesheet.Spritesheet(laneBot)
+
+for i in range(4):
+    robotAnims[0].append(robotBasicSpritesheet.get_image(i, 20, 20, 4, CANCEL_COLOR))
+    robotAnims[2].append(tractorBotSpritesheet.get_image(i, 24, 32, 4, CANCEL_COLOR))
+    robotAnims[3].append(teleportBotSpritesheet.get_image(i, 24, 32, 4, CANCEL_COLOR))
+    robotAnims[1].append(assaultBotSpritesheet.get_image(i, 24, 32, 4, CANCEL_COLOR))
+    robotAnims[4].append(laneBotSpritesheet.get_image(i, 24, 32, 4, CANCEL_COLOR))
 
 while carryOn:
     # check for input
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            carryOn = False
+            pygame.quit()
 
         if event.type == pygame.MOUSEBUTTONDOWN:
             # check if clicking a card
@@ -262,23 +298,16 @@ while carryOn:
                     and pygame.mouse.get_pos()[1] >= card.posy
                     and pygame.mouse.get_pos()[1] <= card.posy + card.height
                     and card.canPick
-                    # and not tipShowing
                 ):
                     currentCard = card
                     card.picked = True
-
-        if event.type == pygame.KEYDOWN:
-            pressed = pygame.key.get_pressed()
-
-            if pressed[pygame.K_SPACE]:
-                tipIndex += 1
 
         if event.type == pygame.MOUSEBUTTONUP:
             # put the selected card back
             if currentCard:
                 currentCard.picked = False
                 currentCard.posx = currentCard.width * currentCard.order + 10
-                currentCard.posy = HEIGHT - currentCard.height - 25
+                currentCard.posy = HEIGHT - currentCard.height - 50
 
                 # if hovering over a vacant tile place the plant
                 for tile in tiles.tileArr:
@@ -408,21 +437,23 @@ while carryOn:
 
     # update text
     moneySurf, moneyRect = moneyFont.render("$" + str(MONEY), BLACK)
-    timerSurf, timerRect = timerFont.render("Wave " + str(WAVE_NUM) + ", Next wave: " + str(round(WAVE_TIME)), WHITE)
+    timerSurf, timerRect = timerFont.render(
+        "Wave " + str(WAVE_NUM) + ", Next wave: " + str(round(WAVE_TIME)), WHITE
+    )
 
     # clear screen
     pygame.draw.rect(screen, (50, 50, 50), [0, 0, WIDTH, HEIGHT])
+
+    # draw tiles
+    tiles.draw()
 
     for tip in tipArr:
         tip.draw()
         if tip.showing:
             tipShowing = True
 
-    # draw tiles
-    # tiles.draw()
-
     # draw the card bar
-    pygame.draw.rect(screen, WHITE, [0, HEIGHT - 150, WIDTH, 150])
+    pygame.draw.rect(screen, (240, 240, 240), [0, HEIGHT - 200, WIDTH, 200])
 
     # draw the cards
     for card in cards:
@@ -439,17 +470,16 @@ while carryOn:
 
     # draw the enemies
     for enemy in enemyArr:
-        enemy.draw()
+        if enemy.name == "basic":
+            enemy.sprite.animate(enemy.x - 15, enemy.y - 15)
+        else:
+            enemy.sprite.animate(enemy.x - 15, enemy.y - 50)
 
     # render text
     screen.blit(
         moneySurf, (WIDTH - moneyRect.width - 10, HEIGHT - moneyRect.height - 10)
     )
-    screen.blit(
-        timerSurf, (WIDTH / 2 - timerRect.width / 2, 5)
-    )
-
-    # sus.draw()
+    screen.blit(timerSurf, (WIDTH / 2 - timerRect.width / 2, 5))
 
     # update screen
     pygame.display.update()

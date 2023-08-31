@@ -1,4 +1,4 @@
-import pygame, game, random
+import pygame, game, random, spritesheet
 
 
 class Enemy:
@@ -51,24 +51,28 @@ class RobotBasicSlow(Enemy):
     def __init__(self, row):
         super().__init__(row, 0.6, 10, 50, False)
         self.name = "basic"
+        self.sprite = spritesheet.Sprite(game.robotAnims, 0, 4, random.randint(0, 3))
 
 
 class RobotBasic(Enemy):
     def __init__(self, row):
         super().__init__(row, 1, 15, 50, False)
         self.name = "basic"
+        self.sprite = spritesheet.Sprite(game.robotAnims, 0, 4, random.randint(0, 3))
 
 
 class AssaultRobot(Enemy):
     def __init__(self, row):
         super().__init__(row, 1.6, 45, 30, False)
         self.name = "assault"
+        self.sprite = spritesheet.Sprite(game.robotAnims, 1, 4, 0)
 
 
 class TractorBot(Enemy):
     def __init__(self, row):
         super().__init__(row, 0.6, 500, 100, False)
         self.name = "tractor"
+        self.sprite = spritesheet.Sprite(game.robotAnims, 2, 4, random.randint(0, 3))
 
 
 class TeleportBot(Enemy):
@@ -76,6 +80,7 @@ class TeleportBot(Enemy):
         super().__init__(row, 0.8, 30, 45, False)
         self.name = "teleport"
         self.tpTimer = 0
+        self.sprite = spritesheet.Sprite(game.robotAnims, 3, 4, random.randint(0, 3))
 
     def teleport(self):
         if self.tpTimer >= 60 * 2:
@@ -91,6 +96,7 @@ class LaneBot(Enemy):
         super().__init__(row, 0.8, 30, 75, False)
         self.name = "laneSwitch"
         self.switchTimer = 0
+        self.sprite = spritesheet.Sprite(game.robotAnims, 4, 4, random.randint(0, 3))
 
     def switch(self):
         if self.switchTimer >= 60 * 3:

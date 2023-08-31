@@ -106,7 +106,7 @@ class CarrotPlant(Plant):
         super().__init__(
             65, "shoot", game.tile, spritesheet.Sprite(game.carrotAnims, 0, 4, 0)
         )
-        self.damage = 10
+        self.damage = 9
         self.fireRate = 200  # lower means faster shooting
         self.shootTimer = 0
         self.bulletArr = []
@@ -136,7 +136,7 @@ class CarrotPlant(Plant):
                             (self.y - 25) / 100,
                             0,
                             0,
-                           spritesheet.Sprite(game.cactusBulletAnim, 0, 4, 0),
+                            spritesheet.Sprite(game.cactusBulletAnim, 0, 4, 0),
                         )
                     )
                     self.bulletCount += 1

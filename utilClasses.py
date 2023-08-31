@@ -1,4 +1,4 @@
-import pygame, game, random, enemiesClasses, plantsClasses
+import pygame, game, random, enemiesClasses, plantsClasses, spritesheet
 
 # Colors
 COLOR1 = (125, 125, 125)
@@ -20,20 +20,11 @@ class Tiles:
         self.tileArr = []
 
     def createTiles(self):
-        color = 0
         for i in range(self.rows):
-            if i % 2 == 0:
-                color = COLOR1
-            else:
-                color = COLOR2
-
             for j in range(self.columns):
-                if color == COLOR1:
-                    color = COLOR2
-                else:
-                    color = COLOR1
-
-                self.tileArr.append([i, j, True, color])  # y, x, canPlant, color
+                self.tileArr.append(
+                    [i, j, True, game.BLACK, 0]
+                )  # y, x, canPlant, color
 
     def draw(self):
         for tile in self.tileArr:
@@ -46,6 +37,11 @@ class Tiles:
                     self.tileWidth,
                     self.tileHeight,
                 ],
+            )
+
+            game.screen.blit(
+                tile[4],
+                (self.tileWidth * tile[1], self.tileHeight * tile[0]),
             )
 
 
@@ -171,7 +167,7 @@ class Card:
         self.cost = cost
         self.canPick = canPick
         self.posx = self.width * self.order + 10
-        self.posy = game.HEIGHT - self.height - 25
+        self.posy = game.HEIGHT - self.height - 50
         self.picked = False
         self.plantName = plantName
         self.image = image
@@ -198,17 +194,4 @@ class Card:
             game.plants.append(plantsClasses.BambooPlant())
 
     def draw(self):
-        color = ORANGE
-
-        if (
-            pygame.mouse.get_pos()[0] >= self.posx
-            and pygame.mouse.get_pos()[0] <= self.posx + self.width
-            and pygame.mouse.get_pos()[1] >= self.posy
-            and pygame.mouse.get_pos()[1] <= self.posy + self.height
-        ):
-            color = BLUE
-
-        # pygame.draw.rect(
-        #     game.screen, color, [self.posx, self.posy, self.width, self.height]
-        # )
         game.screen.blit(self.image, (self.posx, self.posy))
