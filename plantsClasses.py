@@ -238,10 +238,26 @@ class BambooPlant(Plant):
             elif self.shootTimer >= self.fireRate:
                 # add two new bullets to the bullet array, one going the opposite way
                 self.bulletArr.append(
-                    utilClasses.Bullet(self, 5, self.damage, (self.y - 25) / 100)
+                    utilClasses.Bullet(
+                        self,
+                        5,
+                        self.damage,
+                        (self.y - 25) / 100,
+                        30,
+                        35,
+                        spritesheet.Sprite(game.bambooBulletAnim, 0, 4, 0),
+                    )
                 )
                 self.bulletArr.append(
-                    utilClasses.Bullet(self, -5, self.damage, (self.y - 25) / 100)
+                    utilClasses.Bullet(
+                        self,
+                        -5,
+                        self.damage,
+                        (self.y - 25) / 100,
+                        -15,
+                        0,
+                        spritesheet.Sprite(game.bambooBulletAnim, 1, 4, 0),
+                    )
                 )
                 self.shootTimer = 0
             self.shootTimer += 1

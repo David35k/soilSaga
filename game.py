@@ -10,8 +10,9 @@ pygame.display.set_caption("Soil Saga")
 
 clock = pygame.time.Clock()
 
-carryOn = not True
-postgame = not False
+carryOn = True
+gameOver = False
+won = False
 
 # Colors
 COLOR1 = (125, 125, 125)
@@ -34,8 +35,13 @@ MONEY = 75
 pygame.freetype.init()
 moneyFont = pygame.freetype.Font("font/font.ttf", 50)
 tipFont = pygame.freetype.Font("font/font.ttf", 30)
-
+gameOverFont = pygame.freetype.Font("font/font.ttf", 75)
+gameOverSurf, gameOverRect = gameOverFont.render("Game Over!", WHITE)
+questionSurf, questionRect = tipFont.render(
+    "Should've planted more trees... Play again? (y/n)", WHITE
+)
 timerFont = pygame.freetype.Font("font/font.ttf", 25)
+
 WAVE_TIME = 0
 WAVE_NUM = 0
 
@@ -254,6 +260,23 @@ for i in range(4):
         bambooIdleSheet.get_image(i, 32, 32, IMPORT_SCALE, CANCEL_COLOR)
     )
 
+# bullet
+bambooBulletAnim = [[], []]
+bambooBullet = pygame.image.load("images/bamboo/bullet.png").convert_alpha()
+bambooBulletSheet = spritesheet.Spritesheet(bambooBullet)
+
+# bullet2
+bambooBullet2 = pygame.image.load("images/bamboo/bulletInverted.png").convert_alpha()
+bambooBulletSheet2 = spritesheet.Spritesheet(bambooBullet2)
+
+for i in range(4):
+    bambooBulletAnim[0].append(
+        bambooBulletSheet.get_image(i, 32, 32, IMPORT_SCALE, CANCEL_COLOR)
+    )
+    bambooBulletAnim[1].append(
+        bambooBulletSheet2.get_image(i, 32, 32, IMPORT_SCALE, CANCEL_COLOR)
+    )
+
 for tile in tiles.tileArr:
     tile[4] = tileSpritesArr[random.randint(1, 31)]
 
@@ -283,203 +306,287 @@ for i in range(4):
     robotAnims[1].append(assaultBotSpritesheet.get_image(i, 24, 32, 4, CANCEL_COLOR))
     robotAnims[4].append(laneBotSpritesheet.get_image(i, 24, 32, 4, CANCEL_COLOR))
 
+allWaves = [
+    waves.wave1,
+    waves.wave2,
+    waves.wave3,
+    waves.wave4,
+    waves.wave5,
+    waves.wave6,
+    waves.wave7,
+    waves.wave8,
+    waves.wave9,
+    waves.wave10,
+]
+
 while carryOn:
-    # check for input
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
+    if not gameOver:
+        # check for input
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                carryOn = False
+                gameOver = False
 
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            # check if clicking a card
-            for card in cards:
-                if (
-                    pygame.mouse.get_pos()[0] >= card.posx
-                    and pygame.mouse.get_pos()[0] <= card.posx + card.width
-                    and pygame.mouse.get_pos()[1] >= card.posy
-                    and pygame.mouse.get_pos()[1] <= card.posy + card.height
-                    and card.canPick
-                ):
-                    currentCard = card
-                    card.picked = True
-
-        if event.type == pygame.MOUSEBUTTONUP:
-            # put the selected card back
-            if currentCard:
-                currentCard.picked = False
-                currentCard.posx = currentCard.width * currentCard.order + 10
-                currentCard.posy = HEIGHT - currentCard.height - 50
-
-                # if hovering over a vacant tile place the plant
-                for tile in tiles.tileArr:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                # check if clicking a card
+                for card in cards:
                     if (
-                        pygame.mouse.get_pos()[0] >= tiles.tileWidth * tile[1]
-                        and pygame.mouse.get_pos()[0]
-                        <= tiles.tileWidth * tile[1] + tiles.tileWidth
-                        and pygame.mouse.get_pos()[1] >= tiles.tileWidth * tile[0]
-                        and pygame.mouse.get_pos()[1]
-                        <= tiles.tileWidth * tile[0] + tiles.tileHeight
-                        and MONEY >= currentCard.cost
+                        pygame.mouse.get_pos()[0] >= card.posx
+                        and pygame.mouse.get_pos()[0] <= card.posx + card.width
+                        and pygame.mouse.get_pos()[1] >= card.posy
+                        and pygame.mouse.get_pos()[1] <= card.posy + card.height
+                        and card.canPick
                     ):
-                        if currentCard.plantName == "shovel" and not tile[2]:
-                            for plant in plants:
-                                if plant.tile == tile:
-                                    print(
-                                        "removed: "
-                                        + plant.name
-                                        + ", row: "
-                                        + str(tile[0])
-                                        + ", column: "
-                                        + str(tile[1])
-                                    )
-                                    plant.health = 0
-                        if currentCard.plantName != "shovel" and tile[2]:
-                            currentCard.place()
-                            MONEY -= currentCard.cost
-                            tile[2] = False  # cant plant there anymore
+                        currentCard = card
+                        card.picked = True
 
-                currentCard = 0
+            if event.type == pygame.MOUSEBUTTONUP:
+                # put the selected card back
+                if currentCard:
+                    currentCard.picked = False
+                    currentCard.posx = currentCard.width * currentCard.order + 10
+                    currentCard.posy = HEIGHT - currentCard.height - 50
 
-    # update positions of cards
-    if currentCard:
-        if currentCard.picked:
-            currentCard.posx = pygame.mouse.get_pos()[0] - 0.5 * currentCard.width
-            currentCard.posy = pygame.mouse.get_pos()[1] - 0.5 * currentCard.height
+                    # if hovering over a vacant tile place the plant
+                    for tile in tiles.tileArr:
+                        if (
+                            pygame.mouse.get_pos()[0] >= tiles.tileWidth * tile[1]
+                            and pygame.mouse.get_pos()[0]
+                            <= tiles.tileWidth * tile[1] + tiles.tileWidth
+                            and pygame.mouse.get_pos()[1] >= tiles.tileWidth * tile[0]
+                            and pygame.mouse.get_pos()[1]
+                            <= tiles.tileWidth * tile[0] + tiles.tileHeight
+                            and MONEY >= currentCard.cost
+                        ):
+                            if currentCard.plantName == "shovel" and not tile[2]:
+                                for plant in plants:
+                                    if plant.tile == tile:
+                                        plant.health = 0
+                            if currentCard.plantName != "shovel" and tile[2]:
+                                currentCard.place()
+                                MONEY -= currentCard.cost
+                                tile[2] = False  # cant plant there anymore
 
-    # change waves (very bad code) and spawn enemies
-    if waves.wave1.length > 0:
-        waves.wave1.spawnEnemies()
-        waves.wave1.length -= 1
-        WAVE_NUM = "Preperation"
-        WAVE_TIME = waves.wave1.length / 60
-    elif waves.wave1.length <= 0 and waves.wave2.length > 0:
-        waves.wave2.spawnEnemies()
-        waves.wave2.length -= 1
-        WAVE_NUM = 2
-        WAVE_TIME = waves.wave2.length / 60
-    elif waves.wave2.length <= 0 and waves.wave3.length > 0:
-        waves.wave3.spawnEnemies()
-        waves.wave3.length -= 1
-        WAVE_NUM = 3
-        WAVE_TIME = waves.wave3.length / 60
-    elif waves.wave3.length <= 0 and waves.wave4.length > 0:
-        waves.wave4.spawnEnemies()
-        waves.wave4.length -= 1
-        WAVE_NUM = 4
-        WAVE_TIME = waves.wave4.length / 60
-    elif waves.wave4.length <= 0 and waves.wave5.length > 0:
-        waves.wave5.spawnEnemies()
-        waves.wave5.length -= 1
-        WAVE_NUM = 5
-        WAVE_TIME = waves.wave5.length / 60
-    elif waves.wave5.length <= 0 and waves.wave6.length > 0:
-        waves.wave6.spawnEnemies()
-        waves.wave6.length -= 1
-        WAVE_NUM = 6
-        WAVE_TIME = waves.wave6.length / 60
-    elif waves.wave6.length <= 0 and waves.wave7.length > 0:
-        waves.wave7.spawnEnemies()
-        waves.wave7.length -= 1
-        WAVE_NUM = 7
-        WAVE_TIME = waves.wave7.length / 60
-    elif waves.wave7.length <= 0 and waves.wave8.length > 0:
-        waves.wave8.spawnEnemies()
-        waves.wave8.length -= 1
-        WAVE_NUM = 8
-        WAVE_TIME = waves.wave8.length / 60
-    elif waves.wave8.length <= 0 and waves.wave9.length > 0:
-        waves.wave9.spawnEnemies()
-        waves.wave9.length -= 1
-        WAVE_NUM = 9
-        WAVE_TIME = waves.wave9.length / 60
-    elif waves.wave9.length <= 0 and waves.wave10.length > 0:
-        waves.wave10.spawnEnemies()
-        waves.wave10.length -= 1
-        WAVE_NUM = 10
-        WAVE_TIME = waves.wave10.length / 60
+                    currentCard = 0
 
-    # plants attack
-    for plant in plants:
-        plant.checkDeath()
-        if plant.dead:
-            plant.tile[2] = True
-            plants.remove(plant)
-            del plant
-        else:
-            if plant.type == "passive":
-                plant.passive()
-            elif plant.type == "shoot":
-                plant.attack()
+        # update positions of cards
+        if currentCard:
+            if currentCard.picked:
+                currentCard.posx = pygame.mouse.get_pos()[0] - 0.5 * currentCard.width
+                currentCard.posy = pygame.mouse.get_pos()[1] - 0.5 * currentCard.height
 
-                # bullet move
+        # change waves (very bad code) and spawn enemies
+        if waves.wave1.length > 0:
+            waves.wave1.spawnEnemies()
+            waves.wave1.length -= 1
+            WAVE_NUM = "Preperation"
+            WAVE_TIME = waves.wave1.length / 60
+        elif waves.wave1.length <= 0 and waves.wave2.length > 0:
+            waves.wave2.spawnEnemies()
+            waves.wave2.length -= 1
+            WAVE_NUM = 2
+            WAVE_TIME = waves.wave2.length / 60
+        elif waves.wave2.length <= 0 and waves.wave3.length > 0:
+            waves.wave3.spawnEnemies()
+            waves.wave3.length -= 1
+            WAVE_NUM = 3
+            WAVE_TIME = waves.wave3.length / 60
+        elif waves.wave3.length <= 0 and waves.wave4.length > 0:
+            waves.wave4.spawnEnemies()
+            waves.wave4.length -= 1
+            WAVE_NUM = 4
+            WAVE_TIME = waves.wave4.length / 60
+        elif waves.wave4.length <= 0 and waves.wave5.length > 0:
+            waves.wave5.spawnEnemies()
+            waves.wave5.length -= 1
+            WAVE_NUM = 5
+            WAVE_TIME = waves.wave5.length / 60
+        elif waves.wave5.length <= 0 and waves.wave6.length > 0:
+            waves.wave6.spawnEnemies()
+            waves.wave6.length -= 1
+            WAVE_NUM = 6
+            WAVE_TIME = waves.wave6.length / 60
+        elif waves.wave6.length <= 0 and waves.wave7.length > 0:
+            waves.wave7.spawnEnemies()
+            waves.wave7.length -= 1
+            WAVE_NUM = 7
+            WAVE_TIME = waves.wave7.length / 60
+        elif waves.wave7.length <= 0 and waves.wave8.length > 0:
+            waves.wave8.spawnEnemies()
+            waves.wave8.length -= 1
+            WAVE_NUM = 8
+            WAVE_TIME = waves.wave8.length / 60
+        elif waves.wave8.length <= 0 and waves.wave9.length > 0:
+            waves.wave9.spawnEnemies()
+            waves.wave9.length -= 1
+            WAVE_NUM = 9
+            WAVE_TIME = waves.wave9.length / 60
+        elif waves.wave9.length <= 0 and waves.wave10.length > 0:
+            waves.wave10.spawnEnemies()
+            waves.wave10.length -= 1
+            WAVE_NUM = 10
+            WAVE_TIME = waves.wave10.length / 60
+
+        # check if won game
+        if waves.wave10.length <= 0 and not gameOver:
+            won = True
+            gameOver = True
+
+        # plants attack
+        for plant in plants:
+            plant.checkDeath()
+            if plant.dead:
+                plant.tile[2] = True
+                plants.remove(plant)
+                del plant
+            else:
+                if plant.type == "passive":
+                    plant.passive()
+                elif plant.type == "shoot":
+                    plant.attack()
+
+                    # bullet move
+                    for bullet in plant.bulletArr:
+                        bullet.move()
+                        if bullet.destroy and bullet in plant.bulletArr:
+                            plant.bulletArr.remove(bullet)
+                            del bullet
+
+        # check if enemy dead
+        for enemy in enemyArr:
+            enemy.checkDeath()
+            if enemy.dead and enemy in enemyArr:
+                enemyArr.remove(enemy)
+                del enemy
+                MONEY += 10
+            else:
+                # enemies move
+                enemy.move()
+
+        # check for enemy tp
+        for enemy in enemyArr:
+            if enemy.name == "teleport":
+                enemy.teleport()
+            elif enemy.name == "laneSwitch":
+                enemy.switch()
+
+        # update text
+        moneySurf, moneyRect = moneyFont.render("$" + str(MONEY), BLACK)
+        timerSurf, timerRect = timerFont.render(
+            "Wave " + str(WAVE_NUM) + ", Next wave: " + str(round(WAVE_TIME)), WHITE
+        )
+
+        # clear screen
+        pygame.draw.rect(screen, (50, 50, 50), [0, 0, WIDTH, HEIGHT])
+
+        # draw tiles
+        tiles.draw()
+
+        for tip in tipArr:
+            tip.draw()
+            if tip.showing:
+                tipShowing = True
+
+        # draw the card bar
+        pygame.draw.rect(screen, (240, 240, 240), [0, HEIGHT - 200, WIDTH, 200])
+
+        # draw the cards
+        for card in cards:
+            card.draw()
+
+        # draw the plants and their bullets (if they have any)
+        for plant in plants:
+            plant.sprite.animate(plant.x - 25, plant.y - 25)
+
+            if plant.type == "shoot":
                 for bullet in plant.bulletArr:
-                    bullet.move()
-                    if bullet.destroy and bullet in plant.bulletArr:
-                        plant.bulletArr.remove(bullet)
-                        del bullet
+                    if not bullet.destroy:
+                        bullet.sprite.animate(bullet.x - 25, bullet.y - 25)
 
-    # check if enemy dead
-    for enemy in enemyArr:
-        enemy.checkDeath()
-        if enemy.dead and enemy in enemyArr:
-            enemyArr.remove(enemy)
-            del enemy
-            MONEY += 10
-        else:
-            # enemies move
-            enemy.move()
+        # draw the enemies
+        for enemy in enemyArr:
+            if enemy.name == "basic":
+                enemy.sprite.animate(enemy.x - 15, enemy.y - 15)
+            else:
+                enemy.sprite.animate(enemy.x - 15, enemy.y - 50)
 
-    # check for enemy tp
-    for enemy in enemyArr:
-        if enemy.name == "teleport":
-            enemy.teleport()
-        elif enemy.name == "laneSwitch":
-            enemy.switch()
+        # render text
+        screen.blit(
+            moneySurf, (WIDTH - moneyRect.width - 10, HEIGHT - moneyRect.height - 10)
+        )
+        screen.blit(timerSurf, (WIDTH / 2 - timerRect.width / 2, 5))
 
-    # update text
-    moneySurf, moneyRect = moneyFont.render("$" + str(MONEY), BLACK)
-    timerSurf, timerRect = timerFont.render(
-        "Wave " + str(WAVE_NUM) + ", Next wave: " + str(round(WAVE_TIME)), WHITE
-    )
+    elif gameOver:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                carryOn = False
+                gameOver = False
 
-    # clear screen
-    pygame.draw.rect(screen, (50, 50, 50), [0, 0, WIDTH, HEIGHT])
+            if event.type == pygame.KEYDOWN:
+                pressed = pygame.key.get_pressed()
 
-    # draw tiles
-    tiles.draw()
+                if event.key == pygame.K_y:
+                    gameOver = False
+                    # restart
+                    MONEY = 75
+                    waves.wave1.length = 30 * 60 + 1
+                    waves.wave2.length = 45 * 60 + 1
+                    waves.wave3.length = 31 * 60 + 1
+                    waves.wave4.length = 31 * 60 + 1
+                    waves.wave5.length = 50 * 60 + 1
+                    waves.wave6.length = 55 * 60 + 1
+                    waves.wave7.length = 50 * 60 + 1
+                    waves.wave8.length = 65 * 60 + 1
+                    waves.wave9.length = 130 * 60 + 1
+                    waves.wave10.length = 20 * 60 + 1
 
-    for tip in tipArr:
-        tip.draw()
-        if tip.showing:
-            tipShowing = True
+                    for wave in allWaves:
+                        wave.timer = 0
 
-    # draw the card bar
-    pygame.draw.rect(screen, (240, 240, 240), [0, HEIGHT - 200, WIDTH, 200])
+                    for tip in tipArr:
+                        tip.drawTimer = 0
 
-    # draw the cards
-    for card in cards:
-        card.draw()
+                    tiles = utilClasses.Tiles(100, 100, 5, 10)
+                    tiles.createTiles()
 
-    # draw the plants and their bullets (if they have any)
-    for plant in plants:
-        plant.sprite.animate(plant.x - 25, plant.y - 25)
+                    for tile in tiles.tileArr:
+                        tile[4] = tileSpritesArr[random.randint(1, 31)]
 
-        if plant.type == "shoot":
-            for bullet in plant.bulletArr:
-                if not bullet.destroy:
-                    bullet.sprite.animate(bullet.x - 35, plant.y - 17)
+                    while len(plants) > 0:
+                        plants.remove(plants[0])
 
-    # draw the enemies
-    for enemy in enemyArr:
-        if enemy.name == "basic":
-            enemy.sprite.animate(enemy.x - 15, enemy.y - 15)
-        else:
-            enemy.sprite.animate(enemy.x - 15, enemy.y - 50)
+                    while len(enemyArr) > 0:
+                        enemyArr.remove(enemyArr[0])
+                        # del enemyArr[0]
 
-    # render text
-    screen.blit(
-        moneySurf, (WIDTH - moneyRect.width - 10, HEIGHT - moneyRect.height - 10)
-    )
-    screen.blit(timerSurf, (WIDTH / 2 - timerRect.width / 2, 5))
+                if event.key == pygame.K_n:
+                    carryOn = False
+
+        # clear screen
+        pygame.draw.rect(screen, (50, 50, 50), [0, 0, WIDTH, HEIGHT])
+
+        if not won:
+            gameOverSurf, gameOverRect = gameOverFont.render("Game Over!", WHITE)
+            questionSurf, questionRect = tipFont.render(
+                "Should've planted more trees... Play again? (y/n)", WHITE
+            )
+        elif won:
+            gameOverSurf, gameOverRect = gameOverFont.render("You win!", WHITE)
+            questionSurf, questionRect = tipFont.render(
+                "Nice! Play again? (y/n)", WHITE
+            )
+
+        screen.blit(
+            gameOverSurf,
+            (WIDTH / 2 - gameOverRect.width / 2, HEIGHT / 2 - gameOverRect.height / 2),
+        )
+        screen.blit(
+            questionSurf,
+            (
+                WIDTH / 2 - questionRect.width / 2,
+                HEIGHT / 2 - questionRect.height / 2 + 50,
+            ),
+        )
 
     # update screen
     pygame.display.update()

@@ -86,6 +86,7 @@ class Bullet:
         self.offsetX = offsetX
         self.offsetY = offsetY
         self.x = plant.x + offsetX
+        self.y = plant.y + offsetY
         self.destroy = False
         self.row = row
         self.sprite = sprite
@@ -121,42 +122,35 @@ class Wave:
         # each array inside has [type of enemy, time to spawn (frames since start of wave)]
         self.enemies = enemies
         self.length = length  # length of wave in frames
+        self.timer = 0
 
     def spawnEnemies(self):
+        self.timer += 1
         for enemy in self.enemies:
             # check if it is time to spawn
-            if enemy[1] <= 0:
+            if enemy[1] == self.timer:
                 if enemy[0] == "robotBasicSlow":
                     game.enemyArr.append(
                         enemiesClasses.RobotBasicSlow(random.randint(0, 4))
                     )
-                    self.enemies.remove(enemy)
                 elif enemy[0] == "robotBasic":
                     game.enemyArr.append(
                         enemiesClasses.RobotBasic(random.randint(0, 4))
                     )
-                    self.enemies.remove(enemy)
                 elif enemy[0] == "assaultBot":
                     game.enemyArr.append(
                         enemiesClasses.AssaultRobot(random.randint(0, 4))
                     )
-                    self.enemies.remove(enemy)
                 elif enemy[0] == "tractorBot":
                     game.enemyArr.append(
                         enemiesClasses.TractorBot(random.randint(0, 4))
                     )
-                    self.enemies.remove(enemy)
                 elif enemy[0] == "teleportBot":
                     game.enemyArr.append(
                         enemiesClasses.TeleportBot(random.randint(0, 4))
                     )
-                    self.enemies.remove(enemy)
                 elif enemy[0] == "laneBot":
                     game.enemyArr.append(enemiesClasses.LaneBot(random.randint(0, 4)))
-                    self.enemies.remove(enemy)
-
-            else:
-                enemy[1] -= 1
 
 
 class Card:
@@ -173,15 +167,6 @@ class Card:
         self.image = image
 
     def place(self):
-        print(
-            "planted: "
-            + self.plantName
-            + ", row: "
-            + str(game.tile[0])
-            + ", column: "
-            + str(game.tile[1])
-        )
-
         if game.currentCard.plantName == "moneyTree":
             game.plants.append(plantsClasses.MoneyTreePlant())
         elif game.currentCard.plantName == "corn":

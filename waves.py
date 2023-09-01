@@ -6,6 +6,7 @@ import random, utilClasses
 wave1 = utilClasses.Wave(
     [
         # for debuggin lawl
+        # ["assaultBot", 1],
         # ["teleportBot", 5 * 60],
         # ["laneBot", 6 * 60],
         # ["teleportBot", 7 * 60],
@@ -21,7 +22,7 @@ wave1 = utilClasses.Wave(
 )
 wave2 = utilClasses.Wave(
     [
-        ["robotBasicSlow", 0],
+        ["robotBasicSlow", 1],
         ["robotBasicSlow", 20 * 60],
         ["robotBasicSlow", 35 * 60],
         ["robotBasic", 45 * 60],

@@ -21,6 +21,7 @@ class Enemy:
         if self.canMove:
             self.x -= self.speed
 
+        # check if it should attack the plants
         for plant in game.plants:
             if (
                 (plant.y - 25) / 100 == self.row
@@ -31,6 +32,11 @@ class Enemy:
                 self.canMove = False
             if plant.health <= 0:
                 self.canMove = True
+
+        # if it is off the screen to the left you lose
+        if self.x < -25:
+            game.gameOver = True
+            self.dead = True
 
     def attack(self, plant):
         if self.attackTimer >= self.attackRate:
