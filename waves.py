@@ -408,5 +408,5 @@ wave10 = utilClasses.Wave(
         ["teleportBot", random.randint(60 * 1, 60 * 10)],
         ["robotBasic", 20 * 60],
     ],
-    20 * 60 + 1,
+    30 * 60 + 1,
 )
